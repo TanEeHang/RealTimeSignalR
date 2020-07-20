@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>App Title</title>
+
+    <link rel="icon" href="images/favicon.png" type="image/png" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="css/index.css" type="text/css" />
+  </head>
+
+  <body class="text-center">
+    <form class="form-signin">
+      <h1 class="h3 mb-3 font-weight-normal">Please Fill In</h1>
+      <label for="inputEmail" class="sr-only">Username</label>
+      <input
+        id="inputEmail"
+        class="form-control"
+        placeholder="Username"
+        required
+        autofocus
+      />
+      <div class="checkbox mb-3 mt-3">
+        <label class="mr-3">
+          <input type="radio" name="role" value="seller" /> Seller
+        </label>
+        <label>
+          <input type="radio" name="role" value="buyer" checked /> Buyer
+        </label>
+      </div>
+      <button class="btn btn-lg btn-primary btn-block" type="submit">
+        Bid Time
+      </button>
+      <p class="mt-5 mb-3 text-muted">&copy; TNTC 2020</p>
+    </form>
+
+    <script src="js/jquery.slim.js"></script>
+    <script src="js/signalr.js"></script>
+
+    <script>
+      // Get User Input
+      $("form").submit((e) => {
+        e.preventDefault();
+        let name = $("#inputEmail").val().trim();
+        let role = $("input[name='role']:checked").val().trim();
+        sessionStorage.setItem("name", name);
+        sessionStorage.setItem("role", role);
+
+        console.log(name, role);
+        // location: '/';
+      });
+    </script>
+  </body>
+</html>
