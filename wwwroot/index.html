@@ -41,8 +41,6 @@
     </form>
 
     <script src="js/jquery.slim.js"></script>
-    <script src="js/signalr.js"></script>
-
     <script>
       // Get User Input
       $("form").submit((e) => {
@@ -51,7 +49,8 @@
         let role = $("input[name='role']:checked").val().trim();
         sessionStorage.setItem("name", name);
         sessionStorage.setItem("role", role);
-        // location: '/';
+        if (role == "buyer") location = "/";
+        if (role == "seller") location = "/";
       });
     </script>
   </body>
