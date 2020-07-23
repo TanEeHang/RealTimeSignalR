@@ -33,7 +33,10 @@ namespace AssignmentApp
 
             app.UseEndpoints(endpoints =>
             {
-               endpoints.MapHub<BidHub>("/hub");
+               endpoints.MapGet("/", async context =>
+                {
+                    await context.Response.WriteAsync("Hello World!");
+                });
             });
         }
     }
