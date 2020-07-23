@@ -49,8 +49,8 @@
         let role = $("input[name='role']:checked").val().trim();
         sessionStorage.setItem("name", name);
         sessionStorage.setItem("role", role);
-        if (role == "buyer") location = "/";
-        if (role == "seller") location = "/";
+        if (role == "buyer") location = "";
+        if (role == "seller") location = "";
       });
     </script>
   </body>
