@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seller</title>
+
+    <link rel="icon" href="images/favicon.png" type="image/png" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
+
+    <link rel="stylesheet" href="css/seller.css" type="text/css" />
+  </head>
+  <body class="text-center">
+    <form class="form-text">
+      <h1 class="h3 mb-3 font-weight-normal">
+        <b id="you" class="text-success"></b><br />what are you selling?
+      </h1>
+
+      <label for="inputName" class="sr-only">Item Name</label>
+      <input
+        id="inputName"
+        class="form-control"
+        placeholder="Enter an item name"
+        required
+        autofocus
+      />
+      <div class="input-group mt-3 mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">RM</span>
+        </div>
+        <input
+          id="inputPrice"
+          placeholder="Starting Price"
+          type="number"
+          class="form-control"
+          min="1.00"
+          step="0.05"
+          required
+        />
+      </div>
+      <button
+        id="create"
+        class="btn btn-lg btn-warning btn-block"
+        type="submit"
+        disabled
+      >
+        Create
+      </button>
+      <p class="mt-5 mb-3 text-muted">&copy; TNTC 2020</p>
+    </form>
+    <script src="js/jquery.slim.js"></script>
+    <script>
+      // Get name and do checking
+      const name = sessionStorage.getItem("name");
+      if (!name) {
+        location = "index.html";
+        throw "ERROR: Invalid name";
+      }
+      $("#you").text(name);
+
+      // Get User Input
+      $("form").submit((e) => {
+        e.preventDefault();
+        let itemName = $("#inputName").val().trim();
+        let itemPrice = $("#inputPrice").val().trim();
+        sessionStorage.setItem("itemName", itemName);
+        sessionStorage.setItem("itemPrice", itemPrice);
+      });
+
+      //=================================================================================================
+      //    CREATE ROOM ID **REMINDER** (disable create button until connection on)
+      //=================================================================================================
+
+      //=================================================================================================
+      //    CONNECTION
+      //=================================================================================================
+      //   const con = new signalR.HubConnectionBuilder()
+      //     .withUrl("/hub?" + param)
+      //     .build();
+
+      //   con.onclose((err) => {
+      //     alert("Disconnected");
+      //     location = "index.html";
+      //   });
+
+      //   con.start().then(main);
+
+      //   function main() {
+      //     $("#create").prop("disabled", false);
+      //   }
+    </script>
+  </body>
+</html>

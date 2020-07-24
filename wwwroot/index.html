@@ -27,11 +27,11 @@
         autofocus
       />
       <div class="checkbox mb-3 mt-3">
-        <label class="mr-3">
-          <input type="radio" name="role" value="seller" /> Seller
+        <label class="mr-4">
+          <input type="radio" name="role" value="seller" /> I am a Seller
         </label>
         <label>
-          <input type="radio" name="role" value="buyer" checked /> Buyer
+          <input type="radio" name="role" value="buyer" checked /> I am a Buyer
         </label>
       </div>
       <button class="btn btn-lg btn-primary btn-block" type="submit">
@@ -50,7 +50,7 @@
         sessionStorage.setItem("name", name);
         sessionStorage.setItem("role", role);
         if (role == "buyer") location = "";
-        if (role == "seller") location = "";
+        if (role == "seller") location = "seller.html";
       });
     </script>
   </body>
