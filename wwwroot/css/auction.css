@@ -1,0 +1,10 @@
+footer {
+    flex: 0 0 auto;
+    padding: 10px;
+    white-space: nowrap;
+    background-color: #333;
+}
+
+footer form input, button{
+    height: 30px;
+}
