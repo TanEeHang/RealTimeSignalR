@@ -28,82 +28,34 @@
         <script src="js/signalr.js"></script>
         <script src="js/app.js"></script>
         <script>
+            const name = "abc";
             // leave button =====================================================
             $('#leave').click(e => location = '/');
 
-            // General Functions ==================================================
-            const m = $('main')[0];
-            let bottom = true;
-
-            function isBottom() {
-                bottom = m.scrollTop + m.clientHeight + 10 >= m.scrollHeight;
-            }
-
-            function scrollToBottom() {
-                if (bottom) {
-                    m.scrollTop = m.scrollHeight;
-                }
-            }
-
             // Connection Setup ===================================================
             const con = new signalR.HubConnectionBuilder()
-                .withUrl(`/hub?name=${encodeURIComponent(name)}`)
+                .withUrl('/hub')
                 .build();
 
-            con.on('ReceiveText', (name, message, who) => {
-                message = message
-                    .split(':)').join('😊')
-                    .split(':(').join('😥')
-                    .split('<3').join('❤️');
-                
-                message = $('<div>').text(message).html();
-                
-                // TODO(1): Text-to-hyperlink transform
-                message = message.replace(
-                    /(?<=^|\s)(https?:\/\/\S+)(?=$|\s)/gi, 
-                    '<a target="_blank" href="$&">$&</a>'
-                );
-
-                isBottom();
-                $('#priceMsg').append(`
-                    <li class="${who}">
-                        <div>
-                            <b>${name}:</b> ${message}
-                        </div>
-                    </li>
-                `);
-                scrollToBottom();
-            });
-
-            con.on('UpdateStatus', (count, status) => {
-                $('#count').text(count);
-
-                isBottom();
-                $('#chat').append(`
-                    <li class="status">
-                        <div>${status}</div>
-                    </li>
-                `);
-                scrollToBottom();
-            });
-
-            con.onclose(err => location = '/');
+                con.on('ReceiveText', (name, message) => {
+                    $('#priceMsg').append(`
+                        <li>${name} : ${message}</li>
+                    `);
+                });
 
             // Start ==============================================================
             con.start().then(main);
-
             function main() {
-                
-                $('#form').submit(e => {
+
+                $('#priceForm').submit(e => {
                     e.preventDefault();
                     let message = $('#price').val().trim();
                     if (message) {
-                        // Send text
                         con.invoke('SendText', name, message);
                     }
                     $('#price').val('').focus();
                 });
-            }
+            } 
         </script>
     </body>
 </html>
