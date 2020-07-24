@@ -35,3 +35,10 @@ body {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
+
+.image-area {
+  border: 2px dashed #f0ad4e;
+  padding: 1rem;
+  height: 14rem;
+  position: relative;
+}

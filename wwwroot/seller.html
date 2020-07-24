@@ -17,10 +17,27 @@
   </head>
   <body class="text-center">
     <form class="form-text">
+      <!--Get User Name-->
       <h1 class="h3 mb-3 font-weight-normal">
         <b id="you" class="text-success"></b><br />what are you selling?
       </h1>
 
+      <!--Image Display-->
+      <div class="image-area">
+        <img src="#" alt="" id="imageResult" class="mw-100 mh-100" />
+      </div>
+
+      <!--Insert Button-->
+      <button
+        class="btn btn-lg btn-warning mt-1 mb-3"
+        type="button"
+        id="insertButton"
+      >
+        Insert Image
+      </button>
+      <input type="file" id="image" accept="image/*" hidden />
+
+      <!--Enter Item Name-->
       <label for="inputName" class="sr-only">Item Name</label>
       <input
         id="inputName"
@@ -33,6 +50,7 @@
         <div class="input-group-prepend">
           <span class="input-group-text">RM</span>
         </div>
+        <!--Enter Item Price-->
         <input
           id="inputPrice"
           placeholder="Starting Price"
@@ -43,16 +61,20 @@
           required
         />
       </div>
+      <!--Create Button-->
       <button
         id="create"
-        class="btn btn-lg btn-warning btn-block"
+        class="btn btn-lg btn-primary btn-block"
         type="submit"
         disabled
       >
         Create
       </button>
+
       <p class="mt-5 mb-3 text-muted">&copy; TNTC 2020</p>
     </form>
+
+    <!--JavaScript-->
     <script src="js/jquery.slim.js"></script>
     <script>
       // Get name and do checking
@@ -62,6 +84,19 @@
         throw "ERROR: Invalid name";
       }
       $("#you").text(name);
+
+      //Get Image and display
+      $("#insertButton").click((e) => $("#image").click());
+      $("#image").change((e) => {
+        let image = e.target.files[0];
+        if (image && image.type.startsWith("image/")) {
+          let loadImage = new FileReader();
+          loadImage.onload = (e) => {
+            $("#imageResult").attr("src", e.target.result);
+          };
+          loadImage.readAsDataURL(image);
+        }
+      });
 
       // Get User Input
       $("form").submit((e) => {
