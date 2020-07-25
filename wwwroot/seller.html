@@ -76,6 +76,7 @@
 
     <!--JavaScript-->
     <script src="js/jquery.slim.js"></script>
+    <script src="js/signalr.js"></script>
     <script>
       // Get name and do checking
       const name = sessionStorage.getItem("name");
@@ -108,26 +109,30 @@
       });
 
       //=================================================================================================
-      //    CREATE ROOM ID **REMINDER** (disable create button until connection on)
+      //    CREATE ROOM ID
       //=================================================================================================
 
+      $("#create").click(async (e) => {
+        let gameId = await con.invoke("Create");
+        // TODO: SEND ID TO SERVER
+        location = `index.html?roomId=${gameId}`;
+      });
+
       //=================================================================================================
-      //    CONNECTION
+      //    CONNECTION  **REMINDER** (disable create button until connection on)
       //=================================================================================================
-      //   const con = new signalR.HubConnectionBuilder()
-      //     .withUrl("/hub?" + param)
-      //     .build();
+      const con = new signalR.HubConnectionBuilder().withUrl("/hub").build();
 
-      //   con.onclose((err) => {
-      //     alert("Disconnected");
-      //     location = "index.html";
-      //   });
+      con.onclose((err) => {
+        alert("Disconnected");
+        location = "index.html";
+      });
 
-      //   con.start().then(main);
+      con.start().then(main);
 
-      //   function main() {
-      //     $("#create").prop("disabled", false);
-      //   }
+      function main() {
+        $("#create").prop("disabled", false);
+      }
     </script>
   </body>
 </html>

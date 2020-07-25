@@ -1,61 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Auction Page</title>
-    </head>
-    <body>
-        <header>
-            <h1>Auction Page</h1>
-            <div>👧🏻 = <b id="count">0</b></div>
-            <link rel="stylesheet" href="css/auction.css" type="text/css" />
-        </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auction Page</title>
+    <link rel="stylesheet" href="css/auction.css" type="text/css" />
+  </head>
+  <body>
+    <header>
+      <h1>Auction Page</h1>
+      <div>👳🏾‍♂️ = <b id="count">0</b></div>
+    </header>
 
-        <main>
-            <ul id="priceMsg"></ul>
-        </main>
+    <main>
+      <ul id="priceMsg"></ul>
+    </main>
 
-        <footer>
-            <form id="priceForm" autocomplete="off">
-                <input type="text" id="price" placeholder="Enter Bid Price" autofocus>
-                <button type="button" id="image">Send</button>
-                <button type="button" id="leave">Leave</button>
-            </form>
-        </footer>
+    <footer>
+      <form id="priceForm" autocomplete="off">
+        <input type="text" id="price" placeholder="Enter Bid Price" autofocus />
+        <button type="button" id="image">Send</button>
+        <button type="button" id="leave">Leave</button>
+      </form>
+    </footer>
 
-        <script src="js/jquery.slim.js"></script>
-        <script src="js/signalr.js"></script>
-        <script src="js/app.js"></script>
-        <script>
-            const name = "abc";
-            // leave button =====================================================
-            $('#leave').click(e => location = '/');
+    <script src="js/jquery.slim.js"></script>
+    <script src="js/signalr.js"></script>
+    <script src="js/app.js"></script>
+    <script>
+      const name = "abc";
+      // leave button =====================================================
+      $("#leave").click((e) => (location = "/"));
 
-            // Connection Setup ===================================================
-            const con = new signalR.HubConnectionBuilder()
-                .withUrl('/hub')
-                .build();
+      // Connection Setup ===================================================
+      const con = new signalR.HubConnectionBuilder().withUrl("/hub").build();
 
-                con.on('ReceiveText', (name, message) => {
-                    $('#priceMsg').append(`
+      con.on("ReceiveText", (name, message) => {
+        $("#priceMsg").append(`
                         <li>${name} : ${message}</li>
                     `);
-                });
+      });
 
-            // Start ==============================================================
-            con.start().then(main);
-            function main() {
-
-                $('#priceForm').submit(e => {
-                    e.preventDefault();
-                    let message = $('#price').val().trim();
-                    if (message) {
-                        con.invoke('SendText', name, message);
-                    }
-                    $('#price').val('').focus();
-                });
-            } 
-        </script>
-    </body>
+      // Start ==============================================================
+      con.start().then(main);
+      function main() {
+        $("#priceForm").submit((e) => {
+          e.preventDefault();
+          let message = $("#price").val().trim();
+          if (message) {
+            con.invoke("SendText", name, message);
+          }
+          $("#price").val("").focus();
+        });
+      }
+    </script>
+  </body>
 </html>
