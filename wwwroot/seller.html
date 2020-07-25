@@ -113,15 +113,19 @@
       //=================================================================================================
 
       $("#create").click(async (e) => {
-        let gameId = await con.invoke("Create");
+        let roomId = await con.invoke("Create");
         // TODO: SEND ID TO SERVER
-        location = `index.html?roomId=${gameId}`;
+        location = `auction.html?roomId=${roomId}`; //Change to auction.html
       });
 
       //=================================================================================================
       //    CONNECTION  **REMINDER** (disable create button until connection on)
       //=================================================================================================
-      const con = new signalR.HubConnectionBuilder().withUrl("/hub").build();
+      const param = $.param({ page: "seller" });
+
+      const con = new signalR.HubConnectionBuilder()
+        .withUrl("/hub?" + param)
+        .build();
 
       con.onclose((err) => {
         alert("Disconnected");
