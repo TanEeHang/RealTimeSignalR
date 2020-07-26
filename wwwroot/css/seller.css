@@ -27,7 +27,7 @@ body {
   padding: 10px;
   font-size: 16px;
 }
-.form-text .form-control:focus {
+.form-text .form-control {
   z-index: 2;
 }
 .form-text input[type="email"] {

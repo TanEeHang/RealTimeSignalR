@@ -29,7 +29,7 @@ namespace AssignmentApp
         
     public class PriceHub : Hub
     {
-        private static List<Room> rooms = new List<Room>(){   };
+        private static List<Room> rooms = new List<Room>(){ };
 
         public string Create()
         {
