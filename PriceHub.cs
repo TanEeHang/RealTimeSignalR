@@ -20,6 +20,7 @@ namespace AssignmentApp
      public class Room
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
+        public bool AllRooms { get; set; } = true;
     }
 
     //===========================================================================
@@ -47,18 +48,14 @@ namespace AssignmentApp
             await Clients.Others.SendAsync("ReceiveText", name, message, "others");
         }
 
-        private async Task UpdateList(string uid = null)
+        private async Task UpdateList(string id = null)
         {
-            var list = rooms;
+            var list = rooms.FindAll(r => r.AllRooms); 
 
-            if (uid == null)
-            {
-                await Clients.All.SendAsync("UpdateList", list);
-            }
+            if (id == null)
+            { await Clients.All.SendAsync("UpdateList", list); }
             else
-            {
-                await Clients.Caller.SendAsync("UpdateList", list);
-            }
+            { await Clients.Caller.SendAsync("UpdateList", list); }
         }
 
         //===========================================================================
@@ -80,8 +77,7 @@ namespace AssignmentApp
 
         private async Task BuyConnected()
         {
-            string id = Context.ConnectionId;
-            await UpdateList(id);
+            await UpdateList();
         }
 
         private async Task AuctionConnected()

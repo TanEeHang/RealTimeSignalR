@@ -31,7 +31,7 @@
         </thead>
         <tbody>
           <tr>
-            <td colspan="3" class="text-center">No game</td>
+            <td colspan="3" class="text-center">No room</td>
           </tr>
         </tbody>
       </table>
@@ -41,7 +41,7 @@
     <script src="js/signalr.js"></script>
 
     <script>
-      //Get Username
+      //  Get Username
       const name = sessionStorage.getItem("name");
       if (!name) {
         location = "index.html";
@@ -52,7 +52,7 @@
       //=================================================================================================
       //    CONNECTION  **REMINDER** (disable create button until connection on)
       //=================================================================================================
-      const param = $.param({ page: "buyer" });
+      const param = $.param({ page: "buyer", name, role });
 
       const con = new signalR.HubConnectionBuilder()
         .withUrl("/hub?" + param)
@@ -61,6 +61,38 @@
       con.onclose((err) => {
         alert("Disconnected");
         location = "index.html";
+      });
+
+      con.start().then(main);
+
+      function main() {
+        con.invoke("UpdateList");
+      }
+
+      //  Display Rooms in Table
+      con.on("UpdateList", (list) => {
+        let html = "";
+
+        for (let room of list) {
+          html += `
+                    <tr>
+                        <td>H</td>
+                        <td>H</td>
+                        <td><button data-join="${room.id}">Join</button></td>
+                    </tr>
+                `;
+        }
+
+        if (list.length == 0) {
+          html = '<tr><td colspan="3">No room</td></tr>';
+        }
+
+        $("tbody").html(html);
+      });
+
+      $("tbody").on("click", "[data-join]", (e) => {
+        let roomId = $(e.target).data("join");
+        location = `auction.html?roomId=${roomId}`;
       });
     </script>
   </body>

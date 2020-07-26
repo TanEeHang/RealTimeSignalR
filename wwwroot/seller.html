@@ -114,8 +114,7 @@
 
       $("#create").click(async (e) => {
         let roomId = await con.invoke("Create");
-        // TODO: SEND ID TO SERVER
-        location = `auction.html?roomId=${roomId}`; //Change to auction.html
+        location = `auction.html?roomId=${roomId}`;
       });
 
       //=================================================================================================
