@@ -17,9 +17,12 @@ namespace AssignmentApp
         public User(string id, string role, string name) => (Id, Role, Name) = (id, role, name);
     }
 
-     public class Room
+    public class Room
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
+        public string Name { get; set; }
+        public float Price { get; set; }
+        public string Url { get; set; }
         public bool AllRooms { get; set; } = true;
     }
 
@@ -29,11 +32,14 @@ namespace AssignmentApp
         
     public class PriceHub : Hub
     {
-        private static List<Room> rooms = new List<Room>(){   };
+        private static List<Room> rooms = new List<Room>(){};
 
-        public string Create()
+        public string Create(string name, string price, string url)
         {
             var room = new Room();
+            room.Name = name;
+            room.Price = float.Parse(price);
+            room.Url = url;
             rooms.Add(room);
             return room.Id;
         }
@@ -56,6 +62,37 @@ namespace AssignmentApp
             { await Clients.All.SendAsync("UpdateList", list); }
             else
             { await Clients.Caller.SendAsync("UpdateList", list); }
+        }
+
+        public async Task DisplayBid()
+        {
+            var roomId = Context.GetHttpContext().Request.Query["roomId"];
+
+            if(roomId == ""){
+                await Clients.Caller.SendAsync("Reject");
+                return;
+            }
+
+            Room room = rooms.Find(e => e.Id == roomId);
+            await Clients.Caller.SendAsync("ReceiveBid", room);
+        }
+
+        public async Task UpdatePrice(string roomId, float price = 0)
+        {
+            if(roomId == null){
+                await Clients.Caller.SendAsync("Reject");
+                return;
+            }
+
+            Room room = rooms.Find(e => e.Id == roomId);
+            string msg = String.Empty;
+
+            if(price > room.Price){
+                room.Price = price;
+                msg = "Price has updated!";
+            }
+            
+            await Clients.Caller.SendAsync("ReceiveUpdateBid", room.Price, msg);
         }
 
         //===========================================================================

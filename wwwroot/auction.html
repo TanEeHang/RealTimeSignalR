@@ -6,6 +6,12 @@
     <title>Auction Page</title>
     <link rel="icon" href="images/favicon.png" type="image/png" />
     <link rel="stylesheet" href="css/auction.css" type="text/css" />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+      crossorigin="anonymous"
+    />
   </head>
   <body>
     <header>
@@ -13,16 +19,29 @@
       <div>👳🏾‍♂️ = <b id="count">0</b></div>
     </header>
 
-    <main>
-      <ul id="priceMsg"></ul>
-    </main>
+    <div class="container">
+      <div class="bid">
+        <div class="item">
+          <div class="image-area">
+            <img src="#" alt="" id="imageResult" class="mw-100 mh-100" />
+          </div>
+          <div id="name-area"><b id="name"></b></div>
+          <div id="price-area"><p id='price'></p></div>
+        </div>
+
+
+        <div class="price">
+          <form id="priceForm" autocomplete="off">
+            <input type="text" id="price" placeholder="Enter Bid Price" autofocus />
+            <button type="button" id="send">Send</button>
+            <button type="button" id="leave">Leave</button>
+          </form>
+        </div>
+      </div>
+    </div>
 
     <footer>
-      <form id="priceForm" autocomplete="off">
-        <input type="text" id="price" placeholder="Enter Bid Price" autofocus />
-        <button type="button" id="image">Send</button>
-        <button type="button" id="leave">Leave</button>
-      </form>
+      <p class="mt-5 mb-3 text-muted">&copy; TNTC 2020</p>
     </footer>
 
     <script src="js/jquery.slim.js"></script>
@@ -46,7 +65,11 @@
         throw "ERROR: Invalid room id";
       }
 
-      // Connection Setup ===================================================
+      
+
+      //=================================================================================================
+      //    CONNECTION
+      //=================================================================================================
       //Add Hub Param
       const param = $.param({ page: "auction", name, role, roomId });
 
@@ -62,6 +85,7 @@
 
       // Start ==============================================================
       con.start().then(main);
+      
       function main() {
         $("#priceForm").submit((e) => {
           e.preventDefault();
@@ -71,7 +95,16 @@
           }
           $("#price").val("").focus();
         });
+
+        con.invoke("DisplayBid");
       }
+
+      con.on('ReceiveBid', room =>{
+        $('#imageResult').attr('src', room.url);
+        $('#name').text(room.name);
+        $('#price').text(room.price);
+      });
+
     </script>
   </body>
 </html>

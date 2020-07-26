@@ -78,6 +78,9 @@
     <script src="js/jquery.slim.js"></script>
     <script src="js/signalr.js"></script>
     <script>
+      // Store image url to pass into hub
+      let saveurl = null
+
       // Get name and do checking
       const name = sessionStorage.getItem("name");
       if (!name) {
@@ -94,8 +97,10 @@
           let loadImage = new FileReader();
           loadImage.onload = (e) => {
             $("#imageResult").attr("src", e.target.result);
+            saveurl = e.target.result;
           };
           loadImage.readAsDataURL(image);
+          alert(saveurl);
         }
       });
 
@@ -113,7 +118,9 @@
       //=================================================================================================
 
       $("#create").click(async (e) => {
-        let roomId = await con.invoke("Create");
+        let prodName = $('#inputName').val();
+        let prodPrice = $('#inputPrice').val();
+        let roomId = await con.invoke("Create", prodName, prodPrice, saveurl);
         location = `auction.html?roomId=${roomId}`;
       });
 

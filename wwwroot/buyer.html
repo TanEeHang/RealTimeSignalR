@@ -52,7 +52,7 @@
       //=================================================================================================
       //    CONNECTION  **REMINDER** (disable create button until connection on)
       //=================================================================================================
-      const param = $.param({ page: "buyer", name, role });
+      const param = $.param({ page: "buyer"});
 
       const con = new signalR.HubConnectionBuilder()
         .withUrl("/hub?" + param)
@@ -70,7 +70,7 @@
       }
 
       //  Display Rooms in Table
-      con.on("UpdateList", (list) => {
+      con.on("UpdateList", list => {
         let html = "";
 
         for (let room of list) {

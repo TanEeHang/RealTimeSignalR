@@ -1,6 +1,7 @@
 /* General ==================================================================== */
 body, input, select, button {
     font: 16px calibri;
+    background-color: #f5f5f5;
 }
 
 body {
@@ -23,7 +24,7 @@ header {
 header h1 {
     flex: 1 1 auto;
     margin: 0;
-    background: url(../image/favicon.png) no-repeat left center / 32px 32px;
+    background: url(../images/favicon.png) no-repeat left center / 32px 32px;
     padding-left: 40px;
 }
 
@@ -99,4 +100,36 @@ footer form input, button{
 
 #priceMsg li.status div {
     background-color: #ffd54f;
+}
+
+#price, #send, #leave{
+    width: 100%;
+}
+
+/* Container and Item */
+.container{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+.bid{
+    width: 80%;
+    margin: 10%;
+    display: flex;
+    border-radius: 10px;
+    padding: 10px;
+    box-shadow: 0 0 .6rem rgba(0,123,255,.25);
+}
+
+.item{
+    width: max-content;
+    padding: 10px;
+    background-color: rgb(228, 123, 4);
+}
+
+.price{
+    width: 40%;
+    padding: 10px;
+    background-color: darkcyan;
 }
