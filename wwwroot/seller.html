@@ -27,15 +27,19 @@
         <img src="#" alt="" id="imageResult" class="mw-100 mh-100" />
       </div>
 
-      <!--Insert Button-->
-      <button
-        class="btn btn-lg btn-warning mt-1 mb-3"
-        type="button"
-        id="insertButton"
-      >
-        Insert Image
-      </button>
-      <input type="file" id="image" accept="image/*" hidden />
+      <!--Insert Image-->
+      <div class="custom-file mt-1 mb-3">
+        <input
+          type="file"
+          class="custom-file-input"
+          id="image"
+          accept="image/*"
+          required
+        />
+        <label class="custom-file-label text-left" for="image">
+          Insert Image
+        </label>
+      </div>
 
       <!--Enter Item Name-->
       <label for="inputName" class="sr-only">Item Name</label>
@@ -90,37 +94,38 @@
       $("#you").text(name);
 
       //Get Image and display
-      $("#insertButton").click((e) => $("#image").click());
-      $("#image").change((e) => {
+      $("#image").change(e => {
         let image = e.target.files[0];
         if (image && image.type.startsWith("image/")) {
           let loadImage = new FileReader();
-          loadImage.onload = (e) => {
+          loadImage.onload = e => {
             $("#imageResult").attr("src", e.target.result);
             saveurl = e.target.result;
           };
           loadImage.readAsDataURL(image);
-          alert(saveurl);
         }
       });
 
-      // Get User Input
-      $("form").submit((e) => {
-        e.preventDefault();
-        let itemName = $("#inputName").val().trim();
-        let itemPrice = $("#inputPrice").val().trim();
-        sessionStorage.setItem("itemName", itemName);
-        sessionStorage.setItem("itemPrice", itemPrice);
+      $("#image").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this)
+          .siblings(".custom-file-label")
+          .addClass("selected")
+          .html(fileName);
       });
 
       //=================================================================================================
-      //    CREATE ROOM ID
+      //    CREATE ROOM ID AND GET INPUT
       //=================================================================================================
 
-      $("#create").click(async (e) => {
-        let prodName = $('#inputName').val();
-        let prodPrice = $('#inputPrice').val();
-        let roomId = await con.invoke("Create", prodName, prodPrice, saveurl);
+      $("form").submit(async e => {
+        e.preventDefault();
+        let itemName = $("#inputName").val().trim();
+        let itemPrice = $("#inputPrice").val().trim();
+
+        sessionStorage.setItem("itemName", itemName);
+        sessionStorage.setItem("itemPrice", itemPrice);
+        let roomId = await con.invoke("Create", itemName, itemPrice, saveurl);
         location = `auction.html?roomId=${roomId}`;
       });
 
@@ -133,7 +138,7 @@
         .withUrl("/hub?" + param)
         .build();
 
-      con.onclose((err) => {
+      con.onclose(err => {
         alert("Disconnected");
         location = "index.html";
       });

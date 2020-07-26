@@ -17,7 +17,7 @@ namespace AssignmentApp
         public User(string id, string role, string name) => (Id, Role, Name) = (id, role, name);
     }
 
-    public class Room
+     public class Room
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }
@@ -32,7 +32,7 @@ namespace AssignmentApp
         
     public class PriceHub : Hub
     {
-        private static List<Room> rooms = new List<Room>(){};
+        private static List<Room> rooms = new List<Room>(){ };
 
         public string Create(string name, string price, string url)
         {

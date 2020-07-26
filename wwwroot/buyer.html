@@ -15,6 +15,7 @@
 
     <link rel="stylesheet" href="css/buyer.css" type="text/css" />
   </head>
+
   <body class="text-center">
     <div class="div-control border-0">
       <h1 class="h3 mb-3 font-weight-normal">
@@ -49,16 +50,21 @@
       }
       $("#you").text(name);
 
+      $("tbody").on("click", "[data-join]", e => {
+        let roomId = $(e.target).data("join");
+        location = `auction.html?roomId=${roomId}`;
+      });
+
       //=================================================================================================
       //    CONNECTION  **REMINDER** (disable create button until connection on)
       //=================================================================================================
-      const param = $.param({ page: "buyer"});
+      const param = $.param({ page: "buyer" });
 
       const con = new signalR.HubConnectionBuilder()
         .withUrl("/hub?" + param)
         .build();
 
-      con.onclose((err) => {
+      con.onclose(err => {
         alert("Disconnected");
         location = "index.html";
       });
@@ -90,7 +96,7 @@
         $("tbody").html(html);
       });
 
-      $("tbody").on("click", "[data-join]", (e) => {
+      $("tbody").on("click", "[data-join]", e => {
         let roomId = $(e.target).data("join");
         location = `auction.html?roomId=${roomId}`;
       });

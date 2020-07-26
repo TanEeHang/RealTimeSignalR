@@ -11,24 +11,24 @@ body {
     flex-direction: column;
 }
 
-header {
+#head {
+    display: flex;
     flex: 0 0 auto;
     padding: 10px;
     white-space: nowrap;
     background-color: #333;
     color: #ccc;
-    display: flex;
     align-items: center;
 }
 
-header h1 {
+#head h1 {
     flex: 1 1 auto;
     margin: 0;
     background: url(../images/favicon.png) no-repeat left center / 32px 32px;
     padding-left: 40px;
 }
 
-header div {
+#head div {
     flex: 0 0 auto;
     color: #000;
     padding: 3px 6px;
@@ -56,8 +56,10 @@ footer form input, button{
 }
 
 /* price ======================================================================= */
-#form {
+#priceForm {
     display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 #priceMsg {
@@ -117,19 +119,26 @@ footer form input, button{
     width: 80%;
     margin: 10%;
     display: flex;
+    flex-direction: row;
     border-radius: 10px;
     padding: 10px;
     box-shadow: 0 0 .6rem rgba(0,123,255,.25);
+    background-color: #dadff1;
 }
 
 .item{
-    width: max-content;
     padding: 10px;
-    background-color: rgb(228, 123, 4);
+    
 }
 
 .price{
-    width: 40%;
     padding: 10px;
-    background-color: darkcyan;
+    
+}
+
+.myinput, .mybtn{
+    border: 1px solid rgb(155, 167, 167);
+    margin-bottom: 10px;;
+    font-size: 24px;
+    height: 50px;
 }
