@@ -77,6 +77,8 @@
       const name = sessionStorage.getItem("name");
       var price = sessionStorage.getItem("itemPrice");
       var lastPrice = price * 1;
+      var ownID = "";
+      var lastBidID = "";
 
       if (!role || !name) {
         location = "index.html";
@@ -109,6 +111,14 @@
         lastPrice = message;
       });
 
+      con.on("getLastBidID", (id) => {
+        lastBidID = id;
+      });
+
+      con.on("getOwnID", (id) => {
+        ownID = id;
+      });
+
       // Start ==============================================================
       con.start().then(main);
 
@@ -121,16 +131,17 @@
             if(message.match(numbers))
             {
                 bidMsg = message * 1;
-                if(bidMsg > lastPrice){
+                if(bidMsg > lastPrice && lastBidID != ownID){
                     con.invoke("SendText", name, message);
                     con.invoke("updateLastPrice", bidMsg);
+                    con.invoke("updateLastBidID");
                 }
             }
           }
           $("#bidPrice").val("").focus();
         });
-
         con.invoke("DisplayBid");
+        con.invoke("updateOwnID");
       }
 
       con.on("ReceiveBid", room => {

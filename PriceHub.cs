@@ -62,6 +62,19 @@ namespace AssignmentApp
             await Clients.Others.SendAsync("receiveLastPrice", message, "others");
         }
 
+        public async Task updateLastBidID()
+        {
+            string id = Context.ConnectionId;
+            await Clients.Caller.SendAsync("getLastBidID", id, "caller");
+            await Clients.Others.SendAsync("getLastBidID", id, "others");
+        }
+
+        public async Task updateOwnID()
+        {
+            string id = Context.ConnectionId;
+            await Clients.Caller.SendAsync("getOwnID", id, "caller");
+        }
+
         private async Task UpdateList(string id = null)
         {
             var list = rooms.FindAll(r => r.AllRooms); 
