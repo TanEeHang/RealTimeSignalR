@@ -21,6 +21,7 @@ namespace AssignmentApp
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }
+         public string sellername { get; set; }
         public float Price { get; set; }
         public string Url { get; set; }
         public bool AllRooms { get; set; } = true;
@@ -37,7 +38,7 @@ namespace AssignmentApp
         public string Create(string name, string price, string url,string seller)
         {
             var room = new Room();
-            //room.sellername=seller;
+            room.sellername=seller;
             room.Name = name;
             room.Price = float.Parse(price);
             room.Url = url;
