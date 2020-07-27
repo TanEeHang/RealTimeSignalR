@@ -1,24 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Auction Page</title>
-    <link rel="icon" href="images/favicon.png" type="image/png" />
-    <link rel="stylesheet" href="css/auction.css" type="text/css" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body>
-    <header id="head">
-      <h1>Auction Page</h1>
-      <div>👳🏾‍♂️ = <b id="count">0</b></div>
-    </header>
-
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Auction Page</title>
+        <link rel="icon" href="images/favicon.png" type="image/png" />
+        <link rel="stylesheet" href="css/auction.css" type="text/css" />
+        <link
+        rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
+        crossorigin="anonymous"
+        />
+    </head>
+    <body>
+        <header id="head">
+            <h1>Auction Page</h1>
+            <div>👳🏾‍♂️ = <b id="count">0</b></div>
+        </header>
+        
     <div class="container">
       <div class="bid">
         <div class="item">
@@ -70,91 +70,102 @@
     <script src="js/signalr.js"></script>
     <script src="js/app.js"></script>
     <script>
-      // leave button =======================================================
-      $("#leave").click(e => (location = "/"));
+        // leave button =======================================================
+        $("#leave").click(e => (location = "/"));
 
-      // Get User Data ======================================================
-      const role = sessionStorage.getItem("role");
-      const name = sessionStorage.getItem("name");
-      var price = sessionStorage.getItem("itemPrice");
-      const $status = $('#status');
-      const timer = 10;
-      var lastPrice = price * 1;
-      var ownID = "";
-      var lastBidID = "";
+        // Get User Data ======================================================
+        const role = sessionStorage.getItem("role");
+        const name = sessionStorage.getItem("name");
+        var price = sessionStorage.getItem("itemPrice");
+        const $status = $('#status');
+        const timer = sessionStorage.getItem("itemCountDown");
+        var lastPrice = price * 1;
+        var ownID = "";
+        var lastBidID = "";
 
-      if (!role || !name) {
-        location = "index.html";
-        throw "ERROR: Invalid name or role";
-      }
+        if (!role || !name) {
+            location = "index.html";
+            throw "ERROR: Invalid name or role";
+        }
 
-      const roomId = new URL(location).searchParams.get("roomId");
-      if (!roomId) {
-        location = "buyer.html";
-        throw "ERROR: Invalid room id";
-      }
+        const roomId = new URL(location).searchParams.get("roomId");
+        if (!roomId) {
+            location = "buyer.html";
+            throw "ERROR: Invalid room id";
+        }
 
-      //=================================================================================================
-      //    CONNECTION
-      //=================================================================================================
-      //Add Hub Param
-      const param = $.param({ page: "auction", name, role, roomId });
+        //=================================================================================================
+        //    CONNECTION
+        //=================================================================================================
+        //Add Hub Param
+        const param = $.param({ page: "auction", name, role, roomId });
 
-      const con = new signalR.HubConnectionBuilder()
-        .withUrl("/hub?" + param)
-        .build();
+        const con = new signalR.HubConnectionBuilder()
+            .withUrl("/hub?" + param)
+            .build();
 
-      con.on("ReceiveText", (name, message) => {
-        $("#priceMsg").append(`
-            <li>${name} : ${message}</li>
-        `);
-      });
+        con.on("ReceiveText", (name, message) => {
+            $("#priceMsg").append(`
+                <li>${name} : ${message}</li>
+            `);
+        });
 
-      con.on("receiveLastPrice", (message) => {
-        lastPrice = message;
-      });
+        con.on("receiveLastPrice", (message) => {
+            lastPrice = message;
+        });
 
-      con.on("getLastBidID", (id) => {
-        lastBidID = id;
-      });
+        con.on("getLastBidID", (id) => {
+            lastBidID = id;
+        });
 
-      con.on("getOwnID", (id) => {
-        ownID = id;
-      });
+        con.on("getOwnID", (id) => {
+            ownID = id;
+        });
 
-      // Start ==============================================================
-      con.start().then(main);
+        con.on("StartTimer", (timer) => {
+            // setTimeout(() => $status.text('Ready... 3'), 1000);
+            // setTimeout(() => $status.text('Ready... 2'), 2000);
+            // setTimeout(() => $status.text('Ready... 1'), 3000);
+            // setTimeout(() => {
+            //     $status.text('Press SPACE to run!');
+            // }, 4000);
+            $status.text('abc');
+        });
 
-      function main() {
-        $("#priceForm").submit(e => {
-          e.preventDefault();
-          let message = $("#bidPrice").val().trim();
-          if (message) {
-            var numbers = /^[0-9]+$/;
-            if(message.match(numbers))
-            {
-                bidMsg = message * 1;
-                if(bidMsg > lastPrice && lastBidID != ownID){
-                    con.invoke("SendText", name, message);
-                    con.invoke("updateLastPrice", bidMsg);
-                    con.invoke("updateLastBidID");
+        // Start ==============================================================
+        con.start().then(main);
+
+        function main() {
+            $("#priceForm").submit(e => {
+            e.preventDefault();
+            let message = $("#bidPrice").val().trim();
+            if (message) {
+                var numbers = /^[0-9]+$/;
+                if(message.match(numbers))
+                {
+                    bidMsg = message * 1;
+                    if(bidMsg > lastPrice && lastBidID != ownID){
+                        con.invoke("Start", timer);
+                        con.invoke("SendText", name, message);
+                        con.invoke("updateLastPrice", bidMsg);
+                        con.invoke("updateLastBidID");
+                    }
                 }
             }
-          }
-          $("#bidPrice").val("").focus();
+            $("#bidPrice").val("").focus();
+            });
+            con.invoke("DisplayBid");
+            con.invoke("updateOwnID");
+        }
+
+        con.on("ReceiveBid", room => {
+            $("#imageResult").attr("src", room.url);
+            $("#name").text(room.name);
+            $("#price").text(room.price);
+            lastPrice = room.price;
         });
-        con.invoke("DisplayBid");
-        con.invoke("updateOwnID");
-      }
 
-      con.on("ReceiveBid", room => {
-        $("#imageResult").attr("src", room.url);
-        $("#name").text(room.name);
-        $("#price").text(room.price);
-        lastPrice = room.price;
-      });
-
-      con.on("Reject", () => (location = "buyer.html"));
+        con.on("Reject", () => (location = "buyer.html"));
     </script>
   </body>
 </html>
