@@ -44,6 +44,7 @@
     <script>
       //  Get Username
       const name = sessionStorage.getItem("name");
+
       if (!name) {
         location = "index.html";
         throw "ERROR: Invalid name";
@@ -58,7 +59,9 @@
       //=================================================================================================
       //    CONNECTION  **REMINDER** (disable create button until connection on)
       //=================================================================================================
-      const param = $.param({ page: "buyer" });
+      const param = $.param({
+        page: "buyer",
+      });
 
       const con = new signalR.HubConnectionBuilder()
         .withUrl("/hub?" + param)
@@ -81,9 +84,9 @@
 
         for (let room of list) {
           html += `
-                    <tr>
-                        <td>H</td>
-                        <td>H</td>
+                    <tr>   
+                        <td>${room.sellername}</td>
+                        <td>${room.name}</td>
                         <td><button data-join="${room.id}">Join</button></td>
                     </tr>
                 `;

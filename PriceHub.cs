@@ -34,9 +34,10 @@ namespace AssignmentApp
     {
         private static List<Room> rooms = new List<Room>(){ };
 
-        public string Create(string name, string price, string url)
+        public string Create(string name, string price, string url,string seller)
         {
             var room = new Room();
+            //room.sellername=seller;
             room.Name = name;
             room.Price = float.Parse(price);
             room.Url = url;
@@ -52,6 +53,12 @@ namespace AssignmentApp
         {
             await Clients.Caller.SendAsync("ReceiveText", name, message, "caller");
             await Clients.Others.SendAsync("ReceiveText", name, message, "others");
+        }
+
+        public async Task updateLastPrice(double message)
+        {
+            await Clients.Caller.SendAsync("receiveLastPrice", message, "caller");
+            await Clients.Others.SendAsync("receiveLastPrice", message, "others");
         }
 
         private async Task UpdateList(string id = null)
@@ -136,6 +143,42 @@ namespace AssignmentApp
             await Groups.AddToGroupAsync(id, roomId);
 
             await UpdateList();
+        }
+
+         public override async Task OnDisconnectedAsync(Exception exception) 
+        {
+            string page = Context.GetHttpContext().Request.Query["page"];
+
+            switch (page)
+            {
+                case "buyer": BuyerDisconnected(); break;
+                case "auction": await AuctionDisconnected(); break;
+            }
+
+            await base.OnDisconnectedAsync(exception);
+        }
+
+        private void BuyerDisconnected()
+        {
+            // Nothing
+        }
+
+        private async Task AuctionDisconnected()
+        {
+            string id     = Context.ConnectionId;
+            string roomId = Context.GetHttpContext().Request.Query["roomId"];
+
+            Room room = rooms.Find(r => r.Id == roomId);
+            if (room == null)
+            {
+                await Clients.Caller.SendAsync("Reject");
+                return;
+            }
+
+            //Check room is empty
+            
+                rooms.Remove(room);
+                await UpdateList();
         }
 
     }

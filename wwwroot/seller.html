@@ -125,7 +125,7 @@
 
         sessionStorage.setItem("itemName", itemName);
         sessionStorage.setItem("itemPrice", itemPrice);
-        let roomId = await con.invoke("Create", itemName, itemPrice, saveurl);
+        let roomId = await con.invoke("Create", itemName, itemPrice, saveurl,name);
         location = `auction.html?roomId=${roomId}`;
       });
 

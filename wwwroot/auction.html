@@ -26,18 +26,36 @@
             <img src="#" alt="" id="imageResult" class="mw-100 mh-100" />
           </div>
           <div id="name-area"><b id="name"></b></div>
-          <div id="price-area"><p id='price'></p></div>
+          <div id="price-area"><p id="price"></p></div>
         </div>
 
         <main>
-            <ul id="priceMsg"></ul>
+          <ul id="priceMsg"></ul>
         </main>
 
         <div class="price">
           <form id="priceForm" autocomplete="off">
-            <input class="myinput" type="text" id="bidPrice" placeholder="Enter Bid Price" autofocus />
-            <button class="mybtn btn btn-lg btn-primary btn-block" type="button" id="send" >Send</button>
-            <button class="mybtn btn btn-lg btn-primary btn-block" type="button" id="leave">Leave</button>
+            <input
+              class="myinput"
+              type="text"
+              id="bidPrice"
+              placeholder="Enter Bid Price"
+              autofocus
+            />
+            <button
+              class="mybtn btn btn-lg btn-primary btn-block"
+              type="button"
+              id="send"
+            >
+              Send
+            </button>
+            <button
+              class="mybtn btn btn-lg btn-primary btn-block"
+              type="button"
+              id="leave"
+            >
+              Leave
+            </button>
           </form>
         </div>
       </div>
@@ -52,11 +70,12 @@
     <script src="js/app.js"></script>
     <script>
       // leave button =======================================================
-      $("#leave").click((e) => (location = "/"));
+      $("#leave").click(e => (location = "/"));
 
       // Get User Data ======================================================
       const role = sessionStorage.getItem("role");
       const name = sessionStorage.getItem("name");
+      var lastPrice = 0;
 
       if (!role || !name) {
         location = "index.html";
@@ -85,11 +104,15 @@
         `);
       });
 
+      con.on("receiveLastPrice", (message) => {
+        lastPrice = message;
+      });
+
       // Start ==============================================================
       con.start().then(main);
-      
+
       function main() {
-        $("#priceForm").submit((e) => {
+        $("#priceForm").submit(e => {
           e.preventDefault();
           let message = $("#bidPrice").val().trim();
           if (message) {
@@ -97,6 +120,8 @@
             if(message.match(numbers))
             {
                 con.invoke("SendText", name, message);
+                message = message * 1;
+                con.invoke("updateLastPrice", message);
             }
           }
           $("#bidPrice").val("").focus();
@@ -105,12 +130,13 @@
         con.invoke("DisplayBid");
       }
 
-      con.on('ReceiveBid', room =>{
-        $('#imageResult').attr('src', room.url);
-        $('#name').text(room.name);
-        $('#price').text(room.price);
+      con.on("ReceiveBid", room => {
+        $("#imageResult").attr("src", room.url);
+        $("#name").text(room.name);
+        $("#price").text(room.price);
       });
 
+      con.on("Reject", () => (location = "buyer.html"));
     </script>
   </body>
 </html>
