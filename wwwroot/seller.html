@@ -52,13 +52,21 @@
         autofocus
       />
       <!--Enter Count Down-->
-      <label for="inputCountdown" class="sr-only mt-3">Count Down (sec)</label>
-      <input
-        id="inputCountdown"
-        class="form-control"
-        placeholder="Enter Count Down (sec)"
-        required
-      />
+      <div class="input-group mb-3 mt-3">
+        <input
+          id="inputCountdown"
+          type="number"
+          class="form-control"
+          min="1"
+          step="1"
+          placeholder="Enter Count Down"
+          required
+        />
+        <div class="input-group-append">
+          <span class="input-group-text">sec</span>
+        </div>
+      </div>
+
       <div class="input-group mt-3 mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text">RM</span>
