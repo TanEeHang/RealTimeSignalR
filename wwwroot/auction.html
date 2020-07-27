@@ -30,7 +30,8 @@
         </div>
 
         <main>
-          <ul id="priceMsg"></ul>
+            <p id="status">Waiting for bid ~</p>
+            <ul id="priceMsg"></ul>
         </main>
 
         <div class="price">
@@ -76,6 +77,8 @@
       const role = sessionStorage.getItem("role");
       const name = sessionStorage.getItem("name");
       var price = sessionStorage.getItem("itemPrice");
+      const $status = $('#status');
+      const timer = 10;
       var lastPrice = price * 1;
       var ownID = "";
       var lastBidID = "";

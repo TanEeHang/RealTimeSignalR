@@ -74,6 +74,7 @@ namespace AssignmentApp
             string id = Context.ConnectionId;
             await Clients.Caller.SendAsync("getOwnID", id, "caller");
         }
+        
 
         private async Task UpdateList(string id = null)
         {
