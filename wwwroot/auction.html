@@ -113,7 +113,6 @@
       con.start().then(main);
 
       function main() {
-
         $("#priceForm").submit(e => {
           e.preventDefault();
           let message = $("#bidPrice").val().trim();
@@ -138,6 +137,7 @@
         $("#imageResult").attr("src", room.url);
         $("#name").text(room.name);
         $("#price").text(room.price);
+        lastPrice = room.price;
       });
 
       con.on("Reject", () => (location = "buyer.html"));
