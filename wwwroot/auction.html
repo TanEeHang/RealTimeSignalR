@@ -75,7 +75,8 @@
       // Get User Data ======================================================
       const role = sessionStorage.getItem("role");
       const name = sessionStorage.getItem("name");
-      var lastPrice = 0;
+      var price = sessionStorage.getItem("itemPrice");
+      var lastPrice = price * 1;
 
       if (!role || !name) {
         location = "index.html";
@@ -112,6 +113,7 @@
       con.start().then(main);
 
       function main() {
+
         $("#priceForm").submit(e => {
           e.preventDefault();
           let message = $("#bidPrice").val().trim();
@@ -119,9 +121,11 @@
             var numbers = /^[0-9]+$/;
             if(message.match(numbers))
             {
-                con.invoke("SendText", name, message);
-                message = message * 1;
-                con.invoke("updateLastPrice", message);
+                bidMsg = message * 1;
+                if(bidMsg > lastPrice){
+                    con.invoke("SendText", name, message);
+                    con.invoke("updateLastPrice", bidMsg);
+                }
             }
           }
           $("#bidPrice").val("").focus();
