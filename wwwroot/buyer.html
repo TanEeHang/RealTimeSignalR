@@ -1,105 +1,105 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Buyer</title>
 
     <link rel="icon" href="images/favicon.png" type="image/png" />
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-      integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-      crossorigin="anonymous"
-    />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
 
     <link rel="stylesheet" href="css/buyer.css" type="text/css" />
-  </head>
+</head>
 
-  <body class="text-center">
+<body class="text-center">
     <div class="div-control border-0">
-      <h1 class="h3 mb-3 font-weight-normal">
-        <b id="you" class="text-success"></b><br />what are you buying?
-      </h1>
+        <h1 class="h3 mb-3 font-weight-normal">
+            <b id="you" class="text-success"></b><br />what are you buying?
+        </h1>
 
-      <table class="table table-hover">
-        <thead class="thead-dark">
-          <tr>
-            <th>Auctioneer</th>
-            <th>Item</th>
-            <th>Click to Join</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="3" class="text-center">No room</td>
-          </tr>
-        </tbody>
-      </table>
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th>Item</th>
+                    <th>Click to Join</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td colspan="2" class="text-center">No room</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
     <script src="js/jquery.slim.js"></script>
     <script src="js/signalr.js"></script>
 
     <script>
-      //  Get Username
-      const name = sessionStorage.getItem("name");
-      if (!name) {
-        location = "index.html";
-        throw "ERROR: Invalid name";
-      }
-      $("#you").text(name);
+        //  Get Username
+        const name = sessionStorage.getItem("name");
 
-      $("tbody").on("click", "[data-join]", e => {
-        let roomId = $(e.target).data("join");
-        location = `auction.html?roomId=${roomId}`;
-      });
+        if (!name) {
+            location = "index.html";
+            throw "ERROR: Invalid name";
+        }
+        $("#you").text(name);
 
-      //=================================================================================================
-      //    CONNECTION  **REMINDER** (disable create button until connection on)
-      //=================================================================================================
-      const param = $.param({ page: "buyer" });
 
-      const con = new signalR.HubConnectionBuilder()
-        .withUrl("/hub?" + param)
-        .build();
+        $("tbody").on("click", "[data-join]", e => {
+            let roomId = $(e.target).data("join");
+            location = `auction.html?roomId=${roomId}`;
+        });
 
-      con.onclose(err => {
-        alert("Disconnected");
-        location = "index.html";
-      });
+        //=================================================================================================
+        //    CONNECTION  **REMINDER** (disable create button until connection on)
+        //=================================================================================================
+        const param = $.param({
+            page: "buyer"
+        });
 
-      con.start().then(main);
+        const con = new signalR.HubConnectionBuilder()
+            .withUrl("/hub?" + param)
+            .build();
 
-      function main() {
-        con.invoke("UpdateList");
-      }
+        con.onclose(err => {
+            alert("Disconnected");
+            location = "index.html";
+        });
 
-      //  Display Rooms in Table
-      con.on("UpdateList", list => {
-        let html = "";
+        con.start().then(main);
 
-        for (let room of list) {
-          html += `
+        function main() {
+            con.invoke("UpdateList");
+        }
+
+        //  Display Rooms in Table
+        con.on("UpdateList", list => {
+            let html = "";
+
+            for (let room of list) {
+                html += `
                     <tr>
-                        <td>H</td>
-                        <td>H</td>
+                        
+                        <td>${room.name}</td>
                         <td><button data-join="${room.id}">Join</button></td>
                     </tr>
                 `;
-        }
+            }
 
-        if (list.length == 0) {
-          html = '<tr><td colspan="3">No room</td></tr>';
-        }
+            if (list.length == 0) {
+                html = '<tr><td colspan="2">No room</td></tr>';
+            }
 
-        $("tbody").html(html);
-      });
+            $("tbody").html(html);
+        });
 
-      $("tbody").on("click", "[data-join]", e => {
-        let roomId = $(e.target).data("join");
-        location = `auction.html?roomId=${roomId}`;
-      });
+        $("tbody").on("click", "[data-join]", e => {
+            let roomId = $(e.target).data("join");
+            location = `auction.html?roomId=${roomId}`;
+        });
     </script>
-  </body>
+</body>
+
 </html>
