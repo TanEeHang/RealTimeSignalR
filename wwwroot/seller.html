@@ -50,6 +50,9 @@
         required
         autofocus
       />
+      <!--Enter Count Down-->
+      <label for="inputCountdown" class="sr-only">Count Down (sec)</label>
+        <input id="inputCountdown" class="form-control" placeholder="Enter Count Down (sec)" required autofocus />
       <div class="input-group mt-3 mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text">RM</span>
@@ -122,9 +125,13 @@
         e.preventDefault();
         let itemName = $("#inputName").val().trim();
         let itemPrice = $("#inputPrice").val().trim();
+        let itemCountdown = $("#inputCountdown").val().trim();
+
 
         sessionStorage.setItem("itemName", itemName);
         sessionStorage.setItem("itemPrice", itemPrice);
+       sessionStorage.setItem("itemCountdown", itemCountdown);
+
         let roomId = await con.invoke("Create", itemName, itemPrice, saveurl,name);
         location = `auction.html?roomId=${roomId}`;
       });
