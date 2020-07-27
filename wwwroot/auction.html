@@ -30,6 +30,7 @@
         </div>
 
         <main>
+          <p id="status">Waiting for bid ~</p>
           <ul id="priceMsg"></ul>
         </main>
 
@@ -76,6 +77,8 @@
       const role = sessionStorage.getItem("role");
       const name = sessionStorage.getItem("name");
       var price = sessionStorage.getItem("itemPrice");
+      const $status = $("#status");
+      const timer = 10;
       var lastPrice = price * 1;
       var ownID = "";
       var lastBidID = "";
@@ -107,16 +110,20 @@
         `);
       });
 
-      con.on("receiveLastPrice", (message) => {
+      con.on("receiveLastPrice", message => {
         lastPrice = message;
       });
 
-      con.on("getLastBidID", (id) => {
+      con.on("getLastBidID", id => {
         lastBidID = id;
       });
 
-      con.on("getOwnID", (id) => {
+      con.on("getOwnID", id => {
         ownID = id;
+      });
+
+      con.on("UpdateCount", (count, roomId) => {
+        $("#count").text(count);
       });
 
       // Start ==============================================================
@@ -128,14 +135,13 @@
           let message = $("#bidPrice").val().trim();
           if (message) {
             var numbers = /^[0-9]+$/;
-            if(message.match(numbers))
-            {
-                bidMsg = message * 1;
-                if(bidMsg > lastPrice && lastBidID != ownID){
-                    con.invoke("SendText", name, message);
-                    con.invoke("updateLastPrice", bidMsg);
-                    con.invoke("updateLastBidID");
-                }
+            if (message.match(numbers)) {
+              bidMsg = message * 1;
+              if (bidMsg > lastPrice && lastBidID != ownID) {
+                con.invoke("SendText", name, message);
+                con.invoke("updateLastPrice", bidMsg);
+                con.invoke("updateLastBidID");
+              }
             }
           }
           $("#bidPrice").val("").focus();

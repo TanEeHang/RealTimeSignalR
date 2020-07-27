@@ -15,6 +15,7 @@
 
     <link rel="stylesheet" href="css/seller.css" type="text/css" />
   </head>
+
   <body class="text-center">
     <form class="form-text">
       <!--Get User Name-->
@@ -50,6 +51,22 @@
         required
         autofocus
       />
+      <!--Enter Count Down-->
+      <div class="input-group mb-3 mt-3">
+        <input
+          id="inputCountdown"
+          type="number"
+          class="form-control"
+          min="1"
+          step="1"
+          placeholder="Enter Count Down"
+          required
+        />
+        <div class="input-group-append">
+          <span class="input-group-text">sec</span>
+        </div>
+      </div>
+
       <div class="input-group mt-3 mb-3">
         <div class="input-group-prepend">
           <span class="input-group-text">RM</span>
@@ -83,7 +100,7 @@
     <script src="js/signalr.js"></script>
     <script>
       // Store image url to pass into hub
-      let saveurl = null
+      let saveurl = null;
 
       // Get name and do checking
       const name = sessionStorage.getItem("name");
@@ -122,17 +139,29 @@
         e.preventDefault();
         let itemName = $("#inputName").val().trim();
         let itemPrice = $("#inputPrice").val().trim();
+        let itemCountdown = $("#inputCountdown").val().trim();
 
         sessionStorage.setItem("itemName", itemName);
         sessionStorage.setItem("itemPrice", itemPrice);
-        let roomId = await con.invoke("Create", itemName, itemPrice, saveurl,name);
+        sessionStorage.setItem("itemCountdown", itemCountdown);
+
+        let roomId = await con.invoke(
+          "Create",
+          itemName,
+          itemPrice,
+          saveurl,
+          name,
+          itemCountdown
+        );
         location = `auction.html?roomId=${roomId}`;
       });
 
       //=================================================================================================
       //    CONNECTION  **REMINDER** (disable create button until connection on)
       //=================================================================================================
-      const param = $.param({ page: "seller" });
+      const param = $.param({
+        page: "seller",
+      });
 
       const con = new signalR.HubConnectionBuilder()
         .withUrl("/hub?" + param)

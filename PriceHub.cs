@@ -21,9 +21,11 @@ namespace AssignmentApp
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }
-         public string sellername { get; set; }
+        public int countdown{get;set;}
+        public string sellername { get; set; }
         public float Price { get; set; }
         public string Url { get; set; }
+        public int Count { get; set; } = 0;
         public bool AllRooms { get; set; } = true;
     }
 
@@ -35,10 +37,11 @@ namespace AssignmentApp
     {
         private static List<Room> rooms = new List<Room>(){ };
 
-        public string Create(string name, string price, string url,string seller)
+        public string Create(string name, string price, string url,string seller,string timer)
         {
             var room = new Room();
             room.sellername=seller;
+            room.countdown=int.Parse(timer);
             room.Name = name;
             room.Price = float.Parse(price);
             room.Url = url;
@@ -52,21 +55,45 @@ namespace AssignmentApp
         
         public async Task SendText(string name, string message)
         {
-            await Clients.Caller.SendAsync("ReceiveText", name, message, "caller");
-            await Clients.Others.SendAsync("ReceiveText", name, message, "others");
+            var roomId = Context.GetHttpContext().Request.Query["roomId"];
+
+            Room room = rooms.Find(e => e.Id == roomId);
+
+            if(room == null){
+                await Clients.Caller.SendAsync("Reject");
+                return;
+            }
+            
+            await Clients.Group(roomId).SendAsync("ReceiveText", name, message);
         }
 
         public async Task updateLastPrice(double message)
         {
-            await Clients.Caller.SendAsync("receiveLastPrice", message, "caller");
-            await Clients.Others.SendAsync("receiveLastPrice", message, "others");
+            var roomId = Context.GetHttpContext().Request.Query["roomId"];
+
+            Room room = rooms.Find(e => e.Id == roomId);
+
+            if(room == null){
+                await Clients.Caller.SendAsync("Reject");
+                return;
+            }
+
+            await Clients.Group(roomId).SendAsync("receiveLastPrice", message);
         }
 
         public async Task updateLastBidID()
         {
             string id = Context.ConnectionId;
-            await Clients.Caller.SendAsync("getLastBidID", id, "caller");
-            await Clients.Others.SendAsync("getLastBidID", id, "others");
+            var roomId = Context.GetHttpContext().Request.Query["roomId"];
+
+            Room room = rooms.Find(e => e.Id == roomId);
+
+            if(room == null){
+                await Clients.Caller.SendAsync("Reject");
+                return;
+            }
+
+            await Clients.Group(roomId).SendAsync("getLastBidID", id);
         }
 
         public async Task updateOwnID()
@@ -74,6 +101,7 @@ namespace AssignmentApp
             string id = Context.ConnectionId;
             await Clients.Caller.SendAsync("getOwnID", id, "caller");
         }
+        
 
         private async Task UpdateList(string id = null)
         {
@@ -116,6 +144,8 @@ namespace AssignmentApp
             await Clients.Caller.SendAsync("ReceiveUpdateBid", room.Price, msg);
         }
 
+
+
         //===========================================================================
         //  CONNECT AND DISCONNECT
         //===========================================================================
@@ -153,9 +183,9 @@ namespace AssignmentApp
             }
 
             User u = new User(id, role, name);
-            // TODO: Check role fucntion
             await Groups.AddToGroupAsync(id, roomId);
-
+            room.Count++;
+            await Clients.Group(roomId).SendAsync("UpdateCount", room.Count, roomId);
             await UpdateList();
         }
 
@@ -174,7 +204,7 @@ namespace AssignmentApp
 
         private void BuyerDisconnected()
         {
-            // Nothing
+            // Do Nothing
         }
 
         private async Task AuctionDisconnected()
@@ -189,10 +219,14 @@ namespace AssignmentApp
                 return;
             }
 
+            room.Count--;
+            await Clients.Group(roomId).SendAsync("UpdateCount", room.Count, roomId);
+
             //Check room is empty
-            
+            if(room.Count <= 0){
                 rooms.Remove(room);
                 await UpdateList();
+            }
         }
 
     }
