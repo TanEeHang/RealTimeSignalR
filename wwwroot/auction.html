@@ -78,7 +78,7 @@
         const name = sessionStorage.getItem("name");
         var price = sessionStorage.getItem("itemPrice");
         const $status = $('#status');
-        const timer = sessionStorage.getItem("itemCountDown");
+        var timer = sessionStorage.getItem("itemCountdown") * 1;
         var lastPrice = price * 1;
         var ownID = "";
         var lastBidID = "";
@@ -123,13 +123,11 @@
         });
 
         con.on("StartTimer", (timer) => {
-            // setTimeout(() => $status.text('Ready... 3'), 1000);
-            // setTimeout(() => $status.text('Ready... 2'), 2000);
-            // setTimeout(() => $status.text('Ready... 1'), 3000);
-            // setTimeout(() => {
-            //     $status.text('Press SPACE to run!');
-            // }, 4000);
-            $status.text('abc');
+            var countdown = setInterval(function() {
+                timer--;
+                $status.text(timer);
+                if (timer <= 0) clearInterval(countdown);
+            }, 1000);
         });
 
         // Start ==============================================================
