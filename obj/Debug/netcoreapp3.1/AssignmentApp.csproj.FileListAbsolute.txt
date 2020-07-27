@@ -57,3 +57,10 @@ C:/Users/User/Desktop/WebSignalR/AssignmentApp/obj/Debug/netcoreapp3.1/staticweb
 C:/Users/User/Desktop/WebSignalR/AssignmentApp/obj/Debug/netcoreapp3.1/AssignmentApp.dll
 C:/Users/User/Desktop/WebSignalR/AssignmentApp/obj/Debug/netcoreapp3.1/AssignmentApp.pdb
 C:/Users/User/Desktop/WebSignalR/AssignmentApp/obj/Debug/netcoreapp3.1/AssignmentApp.genruntimeconfig.cache
+C:\Users\User\Desktop\WebSignalR\AssignmentApp\obj\Debug\netcoreapp3.1\AssignmentApp.csprojAssemblyReference.cache
+C:\Users\User\Desktop\WebSignalR\AssignmentApp\obj\Debug\netcoreapp3.1\AssignmentApp.AssemblyInfoInputs.cache
+C:\Users\User\Desktop\WebSignalR\AssignmentApp\obj\Debug\netcoreapp3.1\AssignmentApp.AssemblyInfo.cs
+C:\Users\User\Desktop\WebSignalR\AssignmentApp\obj\Debug\netcoreapp3.1\AssignmentApp.csproj.CoreCompileInputs.cache
+C:\Users\User\Desktop\WebSignalR\AssignmentApp\obj\Debug\netcoreapp3.1\AssignmentApp.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\User\Desktop\WebSignalR\AssignmentApp\obj\Debug\netcoreapp3.1\AssignmentApp.dll
+C:\Users\User\Desktop\WebSignalR\AssignmentApp\obj\Debug\netcoreapp3.1\AssignmentApp.pdb
