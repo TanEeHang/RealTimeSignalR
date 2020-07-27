@@ -57,6 +57,7 @@
       // Get User Data ======================================================
       const role = sessionStorage.getItem("role");
       const name = sessionStorage.getItem("name");
+
       if (!role || !name) {
         location = "index.html";
         throw "ERROR: Invalid name or role";
@@ -67,8 +68,6 @@
         location = "buyer.html";
         throw "ERROR: Invalid room id";
       }
-
-      
 
       //=================================================================================================
       //    CONNECTION
@@ -82,8 +81,8 @@
 
       con.on("ReceiveText", (name, message) => {
         $("#priceMsg").append(`
-                        <li>${name} : ${message}</li>
-                    `);
+            <li>${name} : ${message}</li>
+        `);
       });
 
       // Start ==============================================================
@@ -94,7 +93,11 @@
           e.preventDefault();
           let message = $("#bidPrice").val().trim();
           if (message) {
-            con.invoke("SendText", name, message);
+            var numbers = /^[0-9]+$/;
+            if(message.match(numbers))
+            {
+                con.invoke("SendText", name, message);
+            }
           }
           $("#bidPrice").val("").focus();
         });
