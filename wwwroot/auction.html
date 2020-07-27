@@ -29,10 +29,13 @@
           <div id="price-area"><p id='price'></p></div>
         </div>
 
+        <main>
+            <ul id="priceMsg"></ul>
+        </main>
 
         <div class="price">
           <form id="priceForm" autocomplete="off">
-            <input class="myinput" type="text" id="price" placeholder="Enter Bid Price" autofocus />
+            <input class="myinput" type="text" id="bidPrice" placeholder="Enter Bid Price" autofocus />
             <button class="mybtn btn btn-lg btn-primary btn-block" type="button" id="send" >Send</button>
             <button class="mybtn btn btn-lg btn-primary btn-block" type="button" id="leave">Leave</button>
           </form>
@@ -89,11 +92,11 @@
       function main() {
         $("#priceForm").submit((e) => {
           e.preventDefault();
-          let message = $("#price").val().trim();
+          let message = $("#bidPrice").val().trim();
           if (message) {
             con.invoke("SendText", name, message);
           }
-          $("#price").val("").focus();
+          $("#bidPrice").val("").focus();
         });
 
         con.invoke("DisplayBid");
