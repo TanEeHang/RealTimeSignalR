@@ -25,6 +25,7 @@ namespace AssignmentApp
         public string sellername { get; set; }
         public float Price { get; set; }
         public string Url { get; set; }
+        public int Count { get; set; } = 0;
         public bool AllRooms { get; set; } = true;
     }
 
@@ -157,6 +158,8 @@ namespace AssignmentApp
             await Clients.Caller.SendAsync("ReceiveUpdateBid", room.Price, msg);
         }
 
+
+
         //===========================================================================
         //  CONNECT AND DISCONNECT
         //===========================================================================
@@ -194,9 +197,9 @@ namespace AssignmentApp
             }
 
             User u = new User(id, role, name);
-            // TODO: Check role fucntion
             await Groups.AddToGroupAsync(id, roomId);
-
+            room.Count++;
+            await Clients.Group(roomId).SendAsync("UpdateCount", room.Count, roomId);
             await UpdateList();
         }
 
@@ -215,7 +218,7 @@ namespace AssignmentApp
 
         private void BuyerDisconnected()
         {
-            // Nothing
+            // Do Nothing
         }
 
         private async Task AuctionDisconnected()
@@ -230,10 +233,14 @@ namespace AssignmentApp
                 return;
             }
 
+            room.Count--;
+            await Clients.Group(roomId).SendAsync("UpdateCount", room.Count, roomId);
+
             //Check room is empty
-            
+            if(room.Count <= 0){
                 rooms.Remove(room);
                 await UpdateList();
+            }
         }
 
     }
