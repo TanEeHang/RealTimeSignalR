@@ -25,14 +25,13 @@
       <table class="table table-hover">
         <thead class="thead-dark">
           <tr>
-            <th>Auctioneer</th>
             <th>Item</th>
             <th>Click to Join</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td colspan="3" class="text-center">No room</td>
+            <td colspan="2" class="text-center">No room</td>
           </tr>
         </tbody>
       </table>
@@ -44,6 +43,7 @@
     <script>
       //  Get Username
       const name = sessionStorage.getItem("name");
+
       if (!name) {
         location = "index.html";
         throw "ERROR: Invalid name";
@@ -58,7 +58,9 @@
       //=================================================================================================
       //    CONNECTION  **REMINDER** (disable create button until connection on)
       //=================================================================================================
-      const param = $.param({ page: "buyer" });
+      const param = $.param({
+        page: "buyer",
+      });
 
       const con = new signalR.HubConnectionBuilder()
         .withUrl("/hub?" + param)
@@ -81,16 +83,15 @@
 
         for (let room of list) {
           html += `
-                    <tr>
-                        <td>H</td>
-                        <td>H</td>
+                    <tr>        
+                        <td>${room.name}</td>
                         <td><button data-join="${room.id}">Join</button></td>
                     </tr>
                 `;
         }
 
         if (list.length == 0) {
-          html = '<tr><td colspan="3">No room</td></tr>';
+          html = '<tr><td colspan="2">No room</td></tr>';
         }
 
         $("tbody").html(html);
