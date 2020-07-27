@@ -21,6 +21,7 @@ namespace AssignmentApp
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();
         public string Name { get; set; }
+        public int countdown{get;set;}
          public string sellername { get; set; }
         public float Price { get; set; }
         public string Url { get; set; }
@@ -35,10 +36,11 @@ namespace AssignmentApp
     {
         private static List<Room> rooms = new List<Room>(){ };
 
-        public string Create(string name, string price, string url,string seller)
+        public string Create(string name, string price, string url,string seller,string timer)
         {
             var room = new Room();
             room.sellername=seller;
+            room.countdown=int.Parse(timer);
             room.Name = name;
             room.Price = float.Parse(price);
             room.Url = url;
