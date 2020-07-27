@@ -36,7 +36,7 @@ namespace AssignmentApp
     {
         private static List<Room> rooms = new List<Room>(){ };
 
-        public string Create(string name, string price, string url,string seller)//,string timer
+        public string Create(string name, string price, string url,string seller,string timer)
         {
             var room = new Room();
             room.sellername=seller;
