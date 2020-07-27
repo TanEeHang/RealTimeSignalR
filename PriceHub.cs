@@ -34,9 +34,10 @@ namespace AssignmentApp
     {
         private static List<Room> rooms = new List<Room>(){ };
 
-        public string Create(string name, string price, string url)
+        public string Create(string name, string price, string url,string seller)
         {
             var room = new Room();
+            room.sellername=seller;
             room.Name = name;
             room.Price = float.Parse(price);
             room.Url = url;
