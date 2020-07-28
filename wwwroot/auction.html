@@ -19,7 +19,7 @@
             <div>👳🏾‍♂️ = <b id="count">0</b></div>
         </header>
         
-    <div class="container">
+    <div id="container">
       <div class="bid">
         <div class="item">
           <div class="image-area">
@@ -60,6 +60,20 @@
           </form>
         </div>
       </div>
+
+      <div class="chat">
+        <div id="chat-area">
+          <ul id="chat"></ul>
+        </div>
+
+        <div id="chat-insert">
+          <form id="chatForm" autocomplete="off">
+            <input type="text" id="message" placeholder="Enter Message" autofocus>
+            <button type="button" id="image">Image</button>
+            <input type="file" id="file" accept="image/*" hidden>
+        </form>
+        </div>
+      </div>
     </div>
 
     <footer>
@@ -93,6 +107,12 @@
             location = "buyer.html";
             throw "ERROR: Invalid room id";
         }
+
+        //=================================================================================================
+        //    CHAT
+        //=================================================================================================
+        
+
 
         //=================================================================================================
         //    CONNECTION

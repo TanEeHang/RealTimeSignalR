@@ -152,3 +152,14 @@ footer form input, button{
     height: 100%;
     box-shadow: -5px 0px rgba(163, 164, 165, 0.25);
 }
+
+#chat-area{
+    height: 80%;
+    background-color: rgb(197, 143, 105);
+}
+
+#chat-insert{
+    height: 20%;
+    background-color: rgb(107, 168, 224);
+    
+}
