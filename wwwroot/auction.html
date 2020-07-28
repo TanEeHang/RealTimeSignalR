@@ -151,8 +151,8 @@
                 {
                     bidMsg = message * 1;
                     if(bidMsg > lastPrice && lastBidID != ownID){
-                        con.invoke("Start", false);
-                        con.invoke("Start", true);
+                        con.invoke("Start", false, 0);
+                        con.invoke("Start", true, 0);
                         con.invoke("SendText", name, message);
                         con.invoke("updateLastPrice", bidMsg);
                         con.invoke("updateLastBidID");
@@ -161,6 +161,7 @@
             }
             $("#bidPrice").val("").focus();
             });
+            
             con.invoke("DisplayBid");
             con.invoke("updateOwnID");
         }
