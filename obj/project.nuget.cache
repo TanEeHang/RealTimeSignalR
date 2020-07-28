@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "r1FWqihGeQqav1HUaYb58vOBFkdcO3VDlCgY+h9nh7FY4F4yuX8bGSbqYLYv3+k/QfzTd5F+p33u6CzSlEw+tg==",
+  "dgSpecHash": "UF14nCXW946VdXxf5zxOILYyY6M87zaxj7FcMxwZ2qLkXu/GczYMVNzYFjt+FPbyejxVuX2GBg091coad+3o5Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\User\\Desktop\\WebSignalR\\AssignmentApp\\AssignmentApp.csproj",
+  "projectFilePath": "/Users/tehjinxi/Desktop/RealTimeSignalR/AssignmentApp.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

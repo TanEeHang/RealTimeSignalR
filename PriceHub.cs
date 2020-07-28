@@ -81,7 +81,7 @@ namespace AssignmentApp
             await Clients.Group(roomId).SendAsync("receiveLastPrice", message);
         }
 
-        public async Task updateLastBidID()
+        public async Task updateLastBidID(string name)
         {
             string id = Context.ConnectionId;
             var roomId = Context.GetHttpContext().Request.Query["roomId"];
@@ -93,7 +93,7 @@ namespace AssignmentApp
                 return;
             }
 
-            await Clients.Group(roomId).SendAsync("getLastBidID", id);
+            await Clients.Group(roomId).SendAsync("getLastBidID", id, name);
         }
 
         public async Task updateOwnID()
@@ -101,7 +101,25 @@ namespace AssignmentApp
             string id = Context.ConnectionId;
             await Clients.Caller.SendAsync("getOwnID", id, "caller");
         }
-        
+
+        public async Task Start(bool flag, int timer)
+        {
+            var roomId = Context.GetHttpContext().Request.Query["roomId"];
+
+            Room room = rooms.Find(e => e.Id == roomId);
+
+            if(room == null){
+                await Clients.Caller.SendAsync("Reject");
+                return;
+            }
+            if (timer == 0){
+                await Clients.Group(roomId).SendAsync("StartTimer", flag, room.countdown);
+            }
+            else{
+                await Clients.Group(roomId).SendAsync("StartTimer", flag, timer);
+            }
+        }
+
 
         private async Task UpdateList(string id = null)
         {
