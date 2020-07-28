@@ -102,7 +102,7 @@ namespace AssignmentApp
             await Clients.Caller.SendAsync("getOwnID", id, "caller");
         }
 
-        public async Task Start(int timer)
+        public async Task Start(bool flag)
         {
             var roomId = Context.GetHttpContext().Request.Query["roomId"];
 
@@ -113,7 +113,7 @@ namespace AssignmentApp
                 return;
             }
 
-            await Clients.Group(roomId).SendAsync("StartTimer", timer);
+            await Clients.Group(roomId).SendAsync("StartTimer", flag, room.countdown);
         }
         
 
