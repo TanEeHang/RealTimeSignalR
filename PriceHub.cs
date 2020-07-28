@@ -102,7 +102,7 @@ namespace AssignmentApp
             await Clients.Caller.SendAsync("getOwnID", id, "caller");
         }
 
-        public async Task Start(int timer)
+        public async Task Start(bool flag, int timer)
         {
             var roomId = Context.GetHttpContext().Request.Query["roomId"];
 
@@ -112,10 +112,14 @@ namespace AssignmentApp
                 await Clients.Caller.SendAsync("Reject");
                 return;
             }
-
-            await Clients.Group(roomId).SendAsync("StartTimer", timer);
+            if (timer == 0){
+                await Clients.Group(roomId).SendAsync("StartTimer", flag, room.countdown);
+            }
+            else{
+                await Clients.Group(roomId).SendAsync("StartTimer", flag, timer);
+            }
         }
-        
+
 
         private async Task UpdateList(string id = null)
         {

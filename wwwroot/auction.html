@@ -85,7 +85,7 @@
     <script src="js/app.js"></script>
     <script>
         // leave button =======================================================
-        $("#leave").click(e => (location = "/"));
+        $("#leave").click(e => (location = "/buyer.html"));
 
         // Get User Data ======================================================
         const role = sessionStorage.getItem("role");
@@ -141,13 +141,21 @@
         con.on("getOwnID", (id) => {
             ownID = id;
         });
-
-        con.on("StartTimer", (timer) => {
-            var countdown = setInterval(function() {
-                timer--;
+        var countdown = null;
+        con.on("StartTimer", (flag, timer) => {
+          if(flag){
+            countdown = setInterval(function() {
                 $status.text(timer);
-                if (timer <= 0) clearInterval(countdown);
+                if (timer <= 0) {
+                  clearInterval(countdown);
+                  $status.text("Congrats! You have win this bidding!");
+                }
+                timer--;
             }, 1000);
+          }
+          else{
+            clearInterval(countdown);
+          }
         });
 
         // Start ==============================================================
@@ -163,7 +171,8 @@
                 {
                     bidMsg = message * 1;
                     if(bidMsg > lastPrice && lastBidID != ownID){
-                        con.invoke("Start", timer);
+                        con.invoke("Start", false, 0);
+                        con.invoke("Start", true, 0);
                         con.invoke("SendText", name, message);
                         con.invoke("updateLastPrice", bidMsg);
                         con.invoke("updateLastBidID");
@@ -172,6 +181,7 @@
             }
             $("#bidPrice").val("").focus();
             });
+            
             con.invoke("DisplayBid");
             con.invoke("updateOwnID");
         }
@@ -180,6 +190,7 @@
             $("#imageResult").attr("src", room.url);
             $("#name").text(room.name);
             $("#price").text(room.price);
+            $("#time").text(room.timer);
             lastPrice = room.price;
         });
 
