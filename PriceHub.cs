@@ -101,6 +101,20 @@ namespace AssignmentApp
             string id = Context.ConnectionId;
             await Clients.Caller.SendAsync("getOwnID", id, "caller");
         }
+
+        public async Task Start(int timer)
+        {
+            var roomId = Context.GetHttpContext().Request.Query["roomId"];
+
+            Room room = rooms.Find(e => e.Id == roomId);
+
+            if(room == null){
+                await Clients.Caller.SendAsync("Reject");
+                return;
+            }
+
+            await Clients.Group(roomId).SendAsync("StartTimer", timer);
+        }
         
 
         private async Task UpdateList(string id = null)
