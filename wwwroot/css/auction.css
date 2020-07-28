@@ -64,10 +64,13 @@ footer form input, button{
 
 #priceMsg {
     list-style: none;
-    height: 10px;
+    height: 100px;
     margin: 0;
-    padding: 0;
+    padding: 10px;
     overflow: auto;
+    font-size: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 .2rem rgb(115, 142, 190);
 }
 
 #priceMsg li {
@@ -132,12 +135,12 @@ footer form input, button{
 
 .item{
     padding: 10px;
-    
+    width: 75%;
 }
 
 .price{
     padding: 10px;
-    
+    width: 25%;
 }
 
 .myinput, .mybtn{
@@ -210,4 +213,27 @@ input[type=text] {
     padding: 5px;
     box-sizing: border-box;
     width: 100%;
+}
+
+#name-area, #price-area{
+    font-size: 36px;
+    font-weight: bold;
+}
+
+#status{
+    font-size: 26px;
+    color: red;
+}
+
+#quickBid button{
+    flex-wrap: nowrap;
+    width: 100%;
+    height: 50px;
+    font-size: 18px;
+    border-radius: 5px;
+    border-color: #007bff;
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 5px;;
 }
