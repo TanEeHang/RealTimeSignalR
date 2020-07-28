@@ -45,7 +45,6 @@ main {
 
 footer {
     flex: 0 0 auto;
-    padding: 10px;
     white-space: nowrap;
     background-color: #333;
     text-align: center;
@@ -65,8 +64,10 @@ footer form input, button{
 
 #priceMsg {
     list-style: none;
+    height: 10px;
     margin: 0;
     padding: 0;
+    overflow: auto;
 }
 
 #priceMsg li {
@@ -149,17 +150,64 @@ footer form input, button{
 .chat{
     order: 2;
     width: 20%;
-    height: 100%;
     box-shadow: -5px 0px rgba(163, 164, 165, 0.25);
+    display: flex;
+    flex-direction: column;
 }
 
 #chat-area{
-    height: 80%;
-    background-color: rgb(197, 143, 105);
+    order: 1;
+    max-height: 52rem;
+    overflow: auto;
 }
 
 #chat-insert{
-    height: 20%;
+    order: 2;
+    max-height: 20%;
     background-color: rgb(107, 168, 224);
-    
+    padding: 10px;
+    margin-top: auto;
+}
+
+/* CHAT CSS*/
+#chat-area li {
+    margin-bottom: 3px;
+}
+
+#chat-area li div {
+    display: inline-block;
+    max-width: 80%;
+    padding: 3px 6px;
+    border-radius: 3px;
+    word-break: break-all;
+}
+
+#chat-area li.caller {
+    text-align: right;
+}
+
+#chat-area li.caller div {
+    background-color: #aed581;
+}
+
+#chat-area li.others {
+    text-align: left;
+}
+
+#chat-area li.others div {
+    background-color: #80deea;
+}
+
+#chat-area li.status {
+    text-align: center;
+}
+
+#chat-area li.status div {
+    background-color: #ffd54f;
+}
+
+input[type=text] {
+    padding: 5px;
+    box-sizing: border-box;
+    width: 100%;
 }

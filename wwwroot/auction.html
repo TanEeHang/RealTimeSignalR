@@ -28,13 +28,13 @@
           <div id="name-area"><b id="name"></b></div>
           <div id="price-area"><p id="price"></p></div>
         </div>
-
-        <main>
-          <p id="status">Waiting for bid ~</p>
-          <ul id="priceMsg"></ul>
-        </main>
-
+        
         <div class="price">
+          <main>
+            <p id="status">Waiting for bid ~</p>
+            <ul id="priceMsg"></ul>
+          </main>
+
           <form id="priceForm" autocomplete="off">
             <input
               class="myinput"
@@ -69,8 +69,6 @@
         <div id="chat-insert">
           <form id="chatForm" autocomplete="off">
             <input type="text" id="message" placeholder="Enter Message" autofocus>
-            <button type="button" id="image">Image</button>
-            <input type="file" id="file" accept="image/*" hidden>
         </form>
         </div>
       </div>
@@ -111,8 +109,25 @@
         //=================================================================================================
         //    CHAT
         //=================================================================================================
-        
+        // const m = $('#chat-area')[0];
+        // let bottom = true;
 
+        // function isBottom() {
+        //     bottom = m.scrollTop + m.clientHeight + 10 >= m.scrollHeight;
+        // }
+
+        // function scrollToBottom() {
+        //     if (bottom) {
+        //         m.scrollTop = m.scrollHeight;
+        //     }
+        // }
+
+        // $('#chatForm').submit(e => {
+        //         e.preventDefault();
+        //         let message = $('#message').val().trim();
+        //         con.invoke('SendChat', name, message);
+        //         $('#message').val('').focus();
+        // });
 
         //=================================================================================================
         //    CONNECTION
@@ -195,6 +210,45 @@
         });
 
         con.on("Reject", () => (location = "buyer.html"));
+
+        //=================================================================================================
+        //    CHAT
+        //=================================================================================================
+        // con.on('ReceiveChat', (name, message, who) => {
+        //     message = message
+        //         .split(':)').join('😊')
+        //         .split(':(').join('😥')
+        //         .split('<3').join('❤️');
+            
+        //     message = $('<div>').text(message).html();
+            
+        //     // TODO(1): Text-to-hyperlink transform
+        //     message = message.replace(
+        //         /(?<=^|\s)(https?:\/\/\S+)(?=$|\s)/gi,
+        //         '<a class="_blank" href="$&">$&</a>'
+        //     );
+
+        //     isBottom();
+        //     $('#chat-area').append(`
+        //         <li class="${who}">
+        //             <div>
+        //                 <b>${name}:</b> ${message}
+        //             </div>
+        //         </li>
+        //     `);
+        //     scrollToBottom();
+        // });
+
+        // con.on('UpdateChatStatus', (chatstatus) => {
+        //     isBottom();
+        //     $('#chat-area').append(`
+        //         <li class="status">
+        //           <div>${chatstatus}</div>
+        //         </li>
+        //     `);
+        //     scrollToBottom();
+        // });
+
     </script>
   </body>
 </html>

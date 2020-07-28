@@ -165,7 +165,11 @@ namespace AssignmentApp
         //===========================================================================
         //  CHAT
         //===========================================================================
-        
+        public async Task SendChat(string name, string message)
+        {
+            await Clients.Caller.SendAsync("ReceiveChat", name, message, "caller");
+            await Clients.Others.SendAsync("ReceiveChat", name, message, "others");
+        }
 
 
 
@@ -176,6 +180,7 @@ namespace AssignmentApp
          public override async Task OnConnectedAsync()
         {
             string page = Context.GetHttpContext().Request.Query["page"];
+            string name = Context.GetHttpContext().Request.Query["name"];
 
             switch (page)
             {
@@ -184,6 +189,7 @@ namespace AssignmentApp
             }
 
             await base.OnConnectedAsync();
+            await Clients.All.SendAsync("UpdateChatStatus", $"<b>{name}</b> joined");
         }
 
         private async Task BuyConnected()
@@ -215,6 +221,7 @@ namespace AssignmentApp
          public override async Task OnDisconnectedAsync(Exception exception) 
         {
             string page = Context.GetHttpContext().Request.Query["page"];
+            string name = Context.GetHttpContext().Request.Query["name"];
 
             switch (page)
             {
@@ -223,6 +230,7 @@ namespace AssignmentApp
             }
 
             await base.OnDisconnectedAsync(exception);
+            await Clients.All.SendAsync("UpdateChatStatus", $"<b>{name}</b> left");
         }
 
         private void BuyerDisconnected()
