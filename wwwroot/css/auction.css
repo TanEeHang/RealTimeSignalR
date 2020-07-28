@@ -48,6 +48,7 @@ footer {
     padding: 10px;
     white-space: nowrap;
     background-color: #333;
+    text-align: center;
 }
 
 footer form input, button{
@@ -109,13 +110,15 @@ footer form input, button{
 }
 
 /* Container and Item */
-.container{
+#container{
     margin: 0;
     padding: 0;
     text-decoration: none;
+    display: flex;
 }
 
 .bid{
+    order: 1;
     width: 80%;
     margin: 10%;
     display: flex;
@@ -141,4 +144,11 @@ footer form input, button{
     margin-bottom: 10px;;
     font-size: 24px;
     height: 50px;
+}
+
+.chat{
+    order: 2;
+    width: 20%;
+    height: 100%;
+    box-shadow: -5px 0px rgba(163, 164, 165, 0.25);
 }
