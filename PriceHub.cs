@@ -171,8 +171,6 @@ namespace AssignmentApp
          public override async Task OnConnectedAsync()
         {
             string page = Context.GetHttpContext().Request.Query["page"];
-            string name = Context.GetHttpContext().Request.Query["name"];
-
             switch (page)
             {
                 case "buyer": await BuyConnected(); break;
@@ -180,7 +178,6 @@ namespace AssignmentApp
             }
 
             await base.OnConnectedAsync();
-            await Clients.All.SendAsync("UpdateChatStatus", $"<b>{name}</b> joined");
         }
 
         private async Task BuyConnected()
@@ -203,12 +200,13 @@ namespace AssignmentApp
             }
             User u = new User(id, role, name);
             await Groups.AddToGroupAsync(id, roomId);
+            await Clients.All.SendAsync("UpdateChatStatus", $"<b>{name}</b> joined");
             room.Count++;
             await Clients.Group(roomId).SendAsync("UpdateCount", room.Count, room.PeopleMax);
             await UpdateList();
         }
 
-         public override async Task OnDisconnectedAsync(Exception exception) 
+        public override async Task OnDisconnectedAsync(Exception exception) 
         {
             string page = Context.GetHttpContext().Request.Query["page"];
             string name = Context.GetHttpContext().Request.Query["name"];
@@ -220,7 +218,6 @@ namespace AssignmentApp
             }
 
             await base.OnDisconnectedAsync(exception);
-            await Clients.All.SendAsync("UpdateChatStatus", $"<b>{name}</b> left");
         }
 
         private void BuyerDisconnected()
@@ -232,6 +229,7 @@ namespace AssignmentApp
         {
             string id     = Context.ConnectionId;
             string roomId = Context.GetHttpContext().Request.Query["roomId"];
+            string name = Context.GetHttpContext().Request.Query["name"];
 
             Room room = rooms.Find(r => r.Id == roomId);
             if (room == null)
@@ -239,7 +237,7 @@ namespace AssignmentApp
                 await Clients.Caller.SendAsync("Reject");
                 return;
             }
-
+            await Clients.All.SendAsync("UpdateChatStatus", $"<b>{name}</b> left");
             room.Count--;
             await Clients.Group(roomId).SendAsync("UpdateCount", room.Count, room.PeopleMax);
 

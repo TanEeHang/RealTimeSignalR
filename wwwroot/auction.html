@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<<<<<<< HEAD
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -20,29 +19,7 @@
       <div>🧑🏻 = <b id="count">0</b></div>
     </header>
 
-    <div class="container">
-=======
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Auction Page</title>
-        <link rel="icon" href="images/favicon.png" type="image/png" />
-        <link rel="stylesheet" href="css/auction.css" type="text/css" />
-        <link
-        rel="stylesheet"
-        href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk"
-        crossorigin="anonymous"
-        />
-    </head>
-    <body>
-        <header id="head">
-            <h1>Auction Page</h1>
-            <div>👳🏾‍♂️ = <b id="count">0</b></div>
-        </header>
-        
     <div id="container">
->>>>>>> 83b129808590b96966be3a530b2b39261b5ba541
       <div class="bid">
         <div class="item">
           <div class="image-area">
@@ -51,7 +28,7 @@
           <div id="name-area">Item Name : <b id="name"></b></div>
           <div id="price-area">Price (RM) : <b id="price"></b></div>
         </div>
-        
+
         <div class="price">
           <main>
             <p id="status">Waiting for bid ~</p>
@@ -90,8 +67,13 @@
 
         <div id="chat-insert">
           <form id="chatForm" autocomplete="off">
-            <input type="text" id="message" placeholder="Enter Message" autofocus>
-        </form>
+            <input
+              type="text"
+              id="message"
+              placeholder="Enter Message"
+              autofocus
+            />
+          </form>
         </div>
       </div>
     </div>
@@ -139,6 +121,40 @@
       }
 
       //=================================================================================================
+      //    CHAT
+      //=================================================================================================
+      const m = $("#chat-area")[0];
+      const pm = $("#priceMsg")[0];
+      let bottom = true;
+
+      function isBottom() {
+        bottom = m.scrollTop + m.clientHeight + 10 >= m.scrollHeight;
+      }
+
+      function scrollToBottom() {
+        if (bottom) {
+          m.scrollTop = m.scrollHeight;
+        }
+      }
+
+      function isBottomPriceMsg() {
+        bottom = pm.scrollTop + pm.clientHeight + 10 >= pm.scrollHeight;
+      }
+
+      function scrollToBottomPriceMsg() {
+        if (bottom) {
+          pm.scrollTop = pm.scrollHeight;
+        }
+      }
+
+      $("#chatForm").submit(e => {
+        e.preventDefault();
+        let message = $("#message").val().trim();
+        con.invoke("SendChat", name, message);
+        $("#message").val("").focus();
+      });
+
+      //=================================================================================================
       //    CONNECTION
       //=================================================================================================
       //Add Hub Param
@@ -149,18 +165,12 @@
         .build();
 
       con.on("ReceiveText", (name, message) => {
+        isBottomPriceMsg();
         $("#priceMsg").append(`
-              <li>${name} : ${message}</li>
-          `);
-      });
-
-      con.on("UpdateCount", (count, max) => {
-        if (count >= max) {
-          $("#count").text("MAX");
-        } else {
-          $("#count").text(count);
-        }
-<<<<<<< HEAD
+                <li>${name} : ${message}</li>
+            `);
+        $("#price").text(message);
+        scrollToBottomPriceMsg();
       });
 
       con.on("receiveLastPrice", message => {
@@ -175,6 +185,7 @@
       con.on("getOwnID", id => {
         ownID = id;
       });
+
       var countdown = null;
       con.on("StartTimer", (flag, timer) => {
         if (flag) {
@@ -183,7 +194,7 @@
             if (timer <= 0) {
               clearInterval(countdown);
               $status.text(
-                "Congrats! " + lastBidName + " have won this bidding!"
+                "Congrats! " + lastBidName + " have win this bidding!"
               );
               setTimeout(() => window.history.back(), 3000);
               //location = "/buyer.html";
@@ -193,6 +204,27 @@
         } else {
           clearInterval(countdown);
         }
+      });
+
+      $("#1").click(e => {
+        e.preventDefault();
+        $("#bidPrice").val(lastPrice + 50);
+        alert($("#bidPrice").val());
+        $("#priceForm").submit();
+      });
+
+      $("#2").click(e => {
+        e.preventDefault();
+        $("#bidPrice").val(lastPrice + 100);
+        alert($("#bidPrice").val());
+        $("#priceForm").submit();
+      });
+
+      $("#3").click(e => {
+        e.preventDefault();
+        $("#bidPrice").val(lastPrice + 150);
+        alert($("#bidPrice").val());
+        $("#priceForm").submit();
       });
 
       // Start ==============================================================
@@ -214,149 +246,13 @@
                 con.invoke("updateLastBidID", name);
               }
             }
-=======
-
-        //=================================================================================================
-        //    CHAT
-        //=================================================================================================
-        const m = $('#chat-area')[0];
-        const pm = $('#priceMsg')[0];
-        let bottom = true;
-
-        function isBottom() {
-            bottom = m.scrollTop + m.clientHeight + 10 >= m.scrollHeight;
-        }
-
-        function scrollToBottom() {
-            if (bottom) {
-                m.scrollTop = m.scrollHeight;
-            }
-        }
-
-        function isBottomPriceMsg() {
-            bottom = pm.scrollTop + pm.clientHeight + 10 >= pm.scrollHeight;
-        }
-
-        function scrollToBottomPriceMsg() {
-            if (bottom) {
-                pm.scrollTop = pm.scrollHeight;
-            }
-        }
-
-        $('#chatForm').submit(e => {
-                e.preventDefault();
-                let message = $('#message').val().trim();
-                con.invoke('SendChat', name, message);
-                $('#message').val('').focus();
-        });
-
-        //=================================================================================================
-        //    CONNECTION
-        //=================================================================================================
-        //Add Hub Param
-        const param = $.param({ page: "auction", name, role, roomId });
-
-        const con = new signalR.HubConnectionBuilder()
-            .withUrl("/hub?" + param)
-            .build();
-
-        con.on("ReceiveText", (name, message) => {
-          isBottomPriceMsg()
-            $("#priceMsg").append(`
-                <li>${name} : ${message}</li>
-            `);
-            $('#price').text(message);
-            scrollToBottomPriceMsg()
-        });
-
-        con.on("receiveLastPrice", (message) => {
-            lastPrice = message;
-        });
-
-        con.on("getLastBidID", (id, name) => {
-            lastBidID = id;
-            lastBidName = name;
-        });
-
-        con.on("getOwnID", (id) => {
-            ownID = id;
-        });
-
-        var countdown = null;
-        con.on("StartTimer", (flag, timer) => {
-          if(flag){
-            countdown = setInterval(function() {
-                $status.text(timer);
-                if (timer <= 0) {
-                  clearInterval(countdown);
-                  $status.text("Congrats! " + lastBidName + " have win this bidding!");
-                  setTimeout(() => window.history.back(), 3000);
-                  //location = "/buyer.html";
-                }
-                timer--;
-            }, 1000);
-          }
-          else{
-            clearInterval(countdown);
->>>>>>> 83b129808590b96966be3a530b2b39261b5ba541
           }
           $("#bidPrice").val("").focus();
         });
 
-<<<<<<< HEAD
         con.invoke("DisplayBid");
         con.invoke("updateOwnID");
       }
-=======
-        $('#1').click( e =>{
-          e.preventDefault();
-          $("#bidPrice").val(lastPrice + 50);
-          alert($("#bidPrice").val());
-          $('#priceForm').submit();
-        });
-
-        $('#2').click( e =>{
-          e.preventDefault();
-          $("#bidPrice").val(lastPrice + 100);
-          alert($("#bidPrice").val());
-          $('#priceForm').submit();
-        });
-
-        $('#3').click( e =>{
-          e.preventDefault();
-          $("#bidPrice").val(lastPrice + 150);
-          alert($("#bidPrice").val());
-          $('#priceForm').submit();
-        });
-
-        // Start ==============================================================
-        con.start().then(main);
-
-        function main() {
-            $("#priceForm").submit(e => {
-            e.preventDefault();
-            let message = $("#bidPrice").val().trim();
-            if (message) {
-                var numbers = /^[0-9]+$/;
-                if(message.match(numbers))
-                {
-                    bidMsg = message * 1;
-                    if(bidMsg > lastPrice && lastBidID != ownID){
-                        con.invoke("Start", false, 0);
-                        con.invoke("Start", true, 0);
-                        con.invoke("SendText", name, message);
-                        con.invoke("updateLastPrice", bidMsg);
-                        con.invoke("updateLastBidID", name);
-                    }
-                }
-            }
-            $("#bidPrice").val("").focus();
-            });
-            
-            con.invoke("DisplayBid");
-            con.invoke("updateOwnID");
-        }
->>>>>>> 83b129808590b96966be3a530b2b39261b5ba541
 
       con.on("ReceiveBid", room => {
         $("#imageResult").attr("src", room.url);
@@ -366,50 +262,56 @@
         lastPrice = room.price;
       });
 
-<<<<<<< HEAD
       con.on("Reject", () => (location = "buyer.html"));
-=======
-        con.on("Reject", () => (location = "buyer.html"));
 
-        //=================================================================================================
-        //    CHAT
-        //=================================================================================================
-        con.on('ReceiveChat', (name, message, who) => {
-            message = message
-                .split(':)').join('😊')
-                .split(':(').join('😥')
-                .split('<3').join('❤️');
-            
-            message = $('<div>').text(message).html();
-            
-            // TODO(1): Text-to-hyperlink transform
-            message = message.replace(
-                /(?<=^|\s)(https?:\/\/\S+)(?=$|\s)/gi,
-                '<a class="_blank" href="$&">$&</a>'
-            );
+      //=================================================================================================
+      //    CHAT
+      //=================================================================================================
+      con.on("ReceiveChat", (name, message, who) => {
+        message = message
+          .split(":)")
+          .join("😊")
+          .split(":(")
+          .join("😥")
+          .split("<3")
+          .join("❤️");
 
-            isBottom();
-            $('#chat-area').append(`
+        message = $("<div>").text(message).html();
+
+        // TODO(1): Text-to-hyperlink transform
+        message = message.replace(
+          /(?<=^|\s)(https?:\/\/\S+)(?=$|\s)/gi,
+          '<a class="_blank" href="$&">$&</a>'
+        );
+
+        isBottom();
+        $("#chat-area").append(`
                 <li class="${who}">
                     <div>
                         <b>${name}:</b> ${message}
                     </div>
                 </li>
             `);
-            scrollToBottom();
-        });
+        scrollToBottom();
+      });
 
-        con.on('UpdateChatStatus', (chatstatus) => {
-            isBottom();
-            $('#chat-area').append(`
+      con.on("UpdateChatStatus", chatstatus => {
+        isBottom();
+        $("#chat-area").append(`
                 <li class="status">
                   <div>${chatstatus}</div>
                 </li>
             `);
-            scrollToBottom();
-        });
+        scrollToBottom();
+      });
 
->>>>>>> 83b129808590b96966be3a530b2b39261b5ba541
+      con.on("UpdateCount", (count, max) => {
+        if (count >= max) {
+          $("#count").text("MAX");
+        } else {
+          $("#count").text(count);
+        }
+      });
     </script>
   </body>
 </html>
