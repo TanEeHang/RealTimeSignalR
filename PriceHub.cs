@@ -155,22 +155,13 @@ namespace AssignmentApp
             await Clients.Caller.SendAsync("ReceiveBid", room);
         }
 
-        public async Task UpdatePrice(string roomId, float price = 0)
+        //===========================================================================
+        //  CHAT
+        //===========================================================================
+        public async Task SendChat(string name, string message)
         {
-            if(roomId == null){
-                await Clients.Caller.SendAsync("Reject");
-                return;
-            }
-
-            Room room = rooms.Find(e => e.Id == roomId);
-            string msg = String.Empty;
-
-            if(price > room.Price){
-                room.Price = price;
-                msg = "Price has updated!";
-            }
-            
-            await Clients.Caller.SendAsync("ReceiveUpdateBid", room.Price, msg);
+            await Clients.Caller.SendAsync("ReceiveChat", name, message, "caller");
+            await Clients.Others.SendAsync("ReceiveChat", name, message, "others");
         }
 
         //===========================================================================
@@ -180,6 +171,7 @@ namespace AssignmentApp
          public override async Task OnConnectedAsync()
         {
             string page = Context.GetHttpContext().Request.Query["page"];
+            string name = Context.GetHttpContext().Request.Query["name"];
 
             switch (page)
             {
@@ -188,6 +180,7 @@ namespace AssignmentApp
             }
 
             await base.OnConnectedAsync();
+            await Clients.All.SendAsync("UpdateChatStatus", $"<b>{name}</b> joined");
         }
 
         private async Task BuyConnected()
@@ -218,6 +211,7 @@ namespace AssignmentApp
          public override async Task OnDisconnectedAsync(Exception exception) 
         {
             string page = Context.GetHttpContext().Request.Query["page"];
+            string name = Context.GetHttpContext().Request.Query["name"];
 
             switch (page)
             {
@@ -226,6 +220,7 @@ namespace AssignmentApp
             }
 
             await base.OnDisconnectedAsync(exception);
+            await Clients.All.SendAsync("UpdateChatStatus", $"<b>{name}</b> left");
         }
 
         private void BuyerDisconnected()

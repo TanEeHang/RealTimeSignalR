@@ -45,9 +45,9 @@ main {
 
 footer {
     flex: 0 0 auto;
-    padding: 10px;
     white-space: nowrap;
     background-color: #333;
+    text-align: center;
 }
 
 footer form input, button{
@@ -64,8 +64,13 @@ footer form input, button{
 
 #priceMsg {
     list-style: none;
+    height: 100px;
     margin: 0;
-    padding: 0;
+    padding: 10px;
+    overflow: auto;
+    font-size: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 .2rem rgb(115, 142, 190);
 }
 
 #priceMsg li {
@@ -109,13 +114,15 @@ footer form input, button{
 }
 
 /* Container and Item */
-.container{
+#container{
     margin: 0;
     padding: 0;
     text-decoration: none;
+    display: flex;
 }
 
 .bid{
+    order: 1;
     width: 80%;
     margin: 10%;
     display: flex;
@@ -128,12 +135,12 @@ footer form input, button{
 
 .item{
     padding: 10px;
-    
+    width: 75%;
 }
 
 .price{
     padding: 10px;
-    
+    width: 25%;
 }
 
 .myinput, .mybtn{
@@ -141,4 +148,92 @@ footer form input, button{
     margin-bottom: 10px;;
     font-size: 24px;
     height: 50px;
+}
+
+.chat{
+    order: 2;
+    width: 20%;
+    box-shadow: -5px 0px rgba(163, 164, 165, 0.25);
+    display: flex;
+    flex-direction: column;
+}
+
+#chat-area{
+    order: 1;
+    max-height: 52rem;
+    overflow: auto;
+}
+
+#chat-insert{
+    order: 2;
+    max-height: 20%;
+    background-color: rgb(107, 168, 224);
+    padding: 10px;
+    margin-top: auto;
+}
+
+/* CHAT CSS*/
+#chat-area li {
+    margin-bottom: 3px;
+}
+
+#chat-area li div {
+    display: inline-block;
+    max-width: 80%;
+    padding: 3px 6px;
+    border-radius: 3px;
+    word-break: break-all;
+}
+
+#chat-area li.caller {
+    text-align: right;
+}
+
+#chat-area li.caller div {
+    background-color: #aed581;
+}
+
+#chat-area li.others {
+    text-align: left;
+}
+
+#chat-area li.others div {
+    background-color: #80deea;
+}
+
+#chat-area li.status {
+    text-align: center;
+}
+
+#chat-area li.status div {
+    background-color: #ffd54f;
+}
+
+input[type=text] {
+    padding: 5px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+#name-area, #price-area{
+    font-size: 36px;
+    font-weight: bold;
+}
+
+#status{
+    font-size: 26px;
+    color: red;
+}
+
+#quickBid button{
+    flex-wrap: nowrap;
+    width: 100%;
+    height: 50px;
+    font-size: 18px;
+    border-radius: 5px;
+    border-color: #007bff;
+    background-color: #007bff;
+    color: white;
+    font-weight: bold;
+    margin-bottom: 5px;;
 }

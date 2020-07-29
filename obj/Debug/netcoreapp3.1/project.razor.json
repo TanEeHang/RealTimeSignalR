@@ -1,5 +1,9 @@
 {
+<<<<<<< HEAD
   "FilePath": "c:\\Users\\User\\Desktop\\WebSignalR\\AssignmentApp\\AssignmentApp.csproj",
+=======
+  "FilePath": "c:\\Users\\yuhao\\Desktop\\RealTimeSignalR\\AssignmentApp.csproj",
+>>>>>>> 83b129808590b96966be3a530b2b39261b5ba541
   "Configuration": {
     "ConfigurationName": "MVC-3.0",
     "LanguageVersion": "3.0",
