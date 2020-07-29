@@ -77,18 +77,17 @@
       function main() {
         con.invoke("UpdateList");
       }
-
       //  Display Rooms in Table
       con.on("UpdateList", list => {
         let html = "";
 
         for (let room of list) {
           html += `
-                    <tr>   
+                    <tr>
                         <td>${room.sellername}</td>
                         <td>${room.name}</td>
-                        <td><button data-join="${room.id}">Join Here</button></td>
-                    </tr>
+                        <td><button data-join="${room.id}">${room.count}/${room.peopleMax}</button></td>
+                    </tr>room.
                 `;
         }
 

@@ -25,7 +25,7 @@ body {
   box-sizing: border-box;
   height: auto;
   padding: 10px;
-  font-size: 16px;
+  font-size: 14px;
 }
 .form-text .form-control {
   z-index: 2;
@@ -39,6 +39,6 @@ body {
 .image-area {
   border: 2px dashed #f0ad4e;
   padding: 1rem;
-  height: 14rem;
+  height: 12rem;
   position: relative;
 }

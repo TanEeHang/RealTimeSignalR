@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Threading.Tasks;
+using System.Timers;
 using Microsoft.AspNetCore.SignalR;
 
 namespace AssignmentApp
@@ -26,7 +28,9 @@ namespace AssignmentApp
         public float Price { get; set; }
         public string Url { get; set; }
         public int Count { get; set; } = 0;
-        public bool AllRooms { get; set; } = true;
+        public int PeopleMax { get; set; }
+        public bool AllRooms => Count >= PeopleMax;
+        
     }
 
     //===========================================================================
@@ -37,7 +41,7 @@ namespace AssignmentApp
     {
         private static List<Room> rooms = new List<Room>(){ };
 
-        public string Create(string name, string price, string url,string seller,string timer)
+        public string Create(string name, string price, string url,string seller,string timer, string people)
         {
             var room = new Room();
             room.sellername=seller;
@@ -45,6 +49,10 @@ namespace AssignmentApp
             room.Name = name;
             room.Price = float.Parse(price);
             room.Url = url;
+            //var noConvert = startTime;
+            //room.StartTime = DateTime.ParseExact(noConvert, "HH:mm", CultureInfo.InvariantCulture);
+            int convertPP = Convert.ToInt32( people );
+            room.PeopleMax = convertPP;
             rooms.Add(room);
             return room.Id;
         }
@@ -121,14 +129,17 @@ namespace AssignmentApp
         }
 
 
-        private async Task UpdateList(string id = null)
+        public async Task UpdateList(string id = null)
         {
-            var list = rooms.FindAll(r => r.AllRooms); 
-
+            var list = rooms.FindAll(r => r.AllRooms == false); 
             if (id == null)
-            { await Clients.All.SendAsync("UpdateList", list); }
+            { 
+                 await Clients.All.SendAsync("UpdateList", list); 
+            }
             else
-            { await Clients.Caller.SendAsync("UpdateList", list); }
+            { 
+                await Clients.All.SendAsync("UpdateList", list); 
+            }
         }
 
         public async Task DisplayBid()
@@ -161,8 +172,6 @@ namespace AssignmentApp
             
             await Clients.Caller.SendAsync("ReceiveUpdateBid", room.Price, msg);
         }
-
-
 
         //===========================================================================
         //  CONNECT AND DISCONNECT
@@ -199,11 +208,10 @@ namespace AssignmentApp
                 await Clients.Caller.SendAsync("Reject");
                 return;
             }
-
             User u = new User(id, role, name);
             await Groups.AddToGroupAsync(id, roomId);
             room.Count++;
-            await Clients.Group(roomId).SendAsync("UpdateCount", room.Count, roomId);
+            await Clients.Group(roomId).SendAsync("UpdateCount", room.Count, room.PeopleMax);
             await UpdateList();
         }
 
@@ -238,7 +246,7 @@ namespace AssignmentApp
             }
 
             room.Count--;
-            await Clients.Group(roomId).SendAsync("UpdateCount", room.Count, roomId);
+            await Clients.Group(roomId).SendAsync("UpdateCount", room.Count, room.PeopleMax);
 
             //Check room is empty
             if(room.Count <= 0){
