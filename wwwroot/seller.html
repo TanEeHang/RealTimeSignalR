@@ -51,6 +51,38 @@
         required
         autofocus
       />
+
+      <div class="input-group mt-3 mb-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">RM</span>
+        </div>
+        <!--Enter Item Price-->
+        <input
+          id="inputPrice"
+          placeholder="Starting Price"
+          type="number"
+          class="form-control"
+          min="1"
+          step="1"
+          required
+        />
+      </div>
+
+      <div class="input-group mb-3 mt-3">
+        <input
+          id="inputPeople"
+          type="number"
+          class="form-control"
+          min="1"
+          step="1"
+          placeholder="People Allowed"
+          required
+        />
+        <div class="input-group-append">
+          <span class="input-group-text">🧑🏻</span>
+        </div>
+      </div>
+
       <!--Enter Count Down-->
       <div class="input-group mb-3 mt-3">
         <input
@@ -67,21 +99,6 @@
         </div>
       </div>
 
-      <div class="input-group mt-3 mb-3">
-        <div class="input-group-prepend">
-          <span class="input-group-text">RM</span>
-        </div>
-        <!--Enter Item Price-->
-        <input
-          id="inputPrice"
-          placeholder="Starting Price"
-          type="number"
-          class="form-control"
-          min="1.00"
-          step="0.05"
-          required
-        />
-      </div>
       <!--Create Button-->
       <button
         id="create"
@@ -140,10 +157,12 @@
         let itemName = $("#inputName").val().trim();
         let itemPrice = $("#inputPrice").val().trim();
         let itemCountdown = $("#inputCountdown").val().trim();
+        let people = $("#inputPeople").val().trim();
 
         sessionStorage.setItem("itemName", itemName);
         sessionStorage.setItem("itemPrice", itemPrice);
         sessionStorage.setItem("itemCountdown", itemCountdown);
+        sessionStorage.setItem("people", people);
 
         let roomId = await con.invoke(
           "Create",
@@ -151,7 +170,8 @@
           itemPrice,
           saveurl,
           name,
-          itemCountdown
+          itemCountdown,
+          people
         );
         location = `auction.html?roomId=${roomId}`;
       });

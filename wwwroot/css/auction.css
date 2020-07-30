@@ -1,144 +1,248 @@
 /* General ==================================================================== */
-body, input, select, button {
-    font: 16px calibri;
-    background-color: #f5f5f5;
+body,
+input,
+select,
+button {
+  font: 16px calibri;
+  background-color: #f5f5f5;
 }
 
 body {
-    margin: 0;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
 #head {
-    display: flex;
-    flex: 0 0 auto;
-    padding: 10px;
-    white-space: nowrap;
-    background-color: #333;
-    color: #ccc;
-    align-items: center;
+  display: flex;
+  flex: 0 0 auto;
+  padding: 10px;
+  white-space: nowrap;
+  background-color: #333;
+  color: #ccc;
+  align-items: center;
 }
 
 #head h1 {
-    flex: 1 1 auto;
-    margin: 0;
-    background: url(../images/favicon.png) no-repeat left center / 32px 32px;
-    padding-left: 40px;
+  flex: 1 1 auto;
+  margin: 0;
+  background: url(../images/favicon.png) no-repeat left center / 32px 32px;
+  padding-left: 40px;
 }
 
 #head div {
-    flex: 0 0 auto;
-    color: #000;
-    padding: 3px 6px;
-    border-radius: 3px;
-    background-color: #ffd54f;
-    font-size: 1.5rem;
+  flex: 0 0 auto;
+  color: #000;
+  padding: 3px 6px;
+  border-radius: 3px;
+  background-color: #ffd54f;
+  font-size: 1.5rem;
 }
 
 main {
-    flex: 1 1 auto;
-    padding: 10px;
-    overflow: auto;
+  flex: 1 1 auto;
+  padding: 10px;
+  overflow: auto;
 }
 
 footer {
-    flex: 0 0 auto;
-    padding: 10px;
-    white-space: nowrap;
-    background-color: #333;
+  flex: 0 0 auto;
+  white-space: nowrap;
+  background-color: #333;
+  text-align: center;
 }
 
-footer form input, button{
-    height: 30px;
-    box-sizing: border-box;
+footer form input,
+button {
+  height: 30px;
+  box-sizing: border-box;
 }
 
 /* price ======================================================================= */
 #priceForm {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 #priceMsg {
-    list-style: none;
-    margin: 0;
-    padding: 0;
+  list-style: none;
+  height: 100px;
+  margin: 0;
+  padding: 10px;
+  overflow: auto;
+  font-size: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 0.2rem rgb(115, 142, 190);
 }
 
 #priceMsg li {
-    margin-bottom: 3px;
+  margin-bottom: 3px;
 }
 
 #priceMsg li div {
-    display: inline-block;
-    max-width: 80%;
-    padding: 3px 6px;
-    border-radius: 3px;
-    word-break: break-all;
+  display: inline-block;
+  max-width: 80%;
+  padding: 3px 6px;
+  border-radius: 3px;
+  word-break: break-all;
 }
 
 #priceMsg li.caller {
-    text-align: right;
+  text-align: right;
 }
 
 #priceMsg li.caller div {
-    background-color: #aed581;
+  background-color: #aed581;
 }
 
 #priceMsg li.others {
-    text-align: left;
+  text-align: left;
 }
 
 #priceMsg li.others div {
-    background-color: #80deea;
+  background-color: #80deea;
 }
 
 #priceMsg li.status {
-    text-align: center;
+  text-align: center;
 }
 
 #priceMsg li.status div {
-    background-color: #ffd54f;
+  background-color: #ffd54f;
 }
 
-#price, #send, #leave{
-    width: 100%;
+#price,
+#send,
+#leave {
+  width: 100%;
 }
 
 /* Container and Item */
-.container{
-    margin: 0;
-    padding: 0;
-    text-decoration: none;
+#container {
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  display: flex;
 }
 
-.bid{
-    width: 80%;
-    margin: 10%;
-    display: flex;
-    flex-direction: row;
-    border-radius: 10px;
-    padding: 10px;
-    box-shadow: 0 0 .6rem rgba(0,123,255,.25);
-    background-color: #dadff1;
+.bid {
+  order: 1;
+  width: 80%;
+  margin: 10%;
+  display: flex;
+  flex-direction: row;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 0 0.6rem rgba(0, 123, 255, 0.25);
+  background-color: #dadff1;
 }
 
-.item{
-    padding: 10px;
-    
+.item {
+  padding: 10px;
+  width: 70%;
 }
 
-.price{
-    padding: 10px;
-    
+.price {
+  padding: 10px;
+  width: 30%;
+  max-width: 30%;
 }
 
-.myinput, .mybtn{
-    border: 1px solid rgb(155, 167, 167);
-    margin-bottom: 10px;;
-    font-size: 24px;
-    height: 50px;
+.myinput,
+.mybtn {
+  border: 1px solid rgb(155, 167, 167);
+  margin-bottom: 10px;
+  font-size: 24px;
+  height: 50px;
+}
+
+.chat {
+  order: 2;
+  width: 20%;
+  box-shadow: -5px 0px rgba(163, 164, 165, 0.25);
+  display: flex;
+  flex-direction: column;
+}
+
+#chat-area {
+  order: 1;
+  max-height: 52rem;
+  overflow: auto;
+}
+
+#chat-insert {
+  order: 2;
+  max-height: 20%;
+  background-color: rgb(107, 168, 224);
+  padding: 10px;
+  margin-top: auto;
+}
+
+/* CHAT CSS*/
+#chat-area li {
+  margin-bottom: 3px;
+}
+
+#chat-area li div {
+  display: inline-block;
+  max-width: 80%;
+  padding: 3px 6px;
+  border-radius: 3px;
+  word-break: break-all;
+}
+
+#chat-area li.caller {
+  text-align: right;
+}
+
+#chat-area li.caller div {
+  background-color: #aed581;
+}
+
+#chat-area li.others {
+  text-align: left;
+}
+
+#chat-area li.others div {
+  background-color: #80deea;
+}
+
+#chat-area li.status {
+  text-align: center;
+}
+
+#chat-area li.status div {
+  background-color: #ffd54f;
+}
+
+input[type="text"] {
+  padding: 5px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+#name-area,
+#price-area {
+  font-size: 36px;
+  font-weight: bold;
+}
+
+#status {
+  font-size: 26px;
+  color: red;
+}
+
+#quickBid button {
+  flex-wrap: nowrap;
+  width: 100%;
+  height: 50px;
+  font-size: 18px;
+  border-radius: 5px;
+  border-color: #007bff;
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 5px;
 }
