@@ -111,6 +111,7 @@
       const btn1 = document.getElementById("1");
       const btn2 = document.getElementById("2");
       const btn3 = document.getElementById("3");
+      var bidPending = true;
       textArea.disabled = true;
       btn1.disabled = true;
       btn2.disabled = true;
@@ -194,6 +195,7 @@
       });
 
       con.on("getBidBtn", status => {
+        bidPending = status;
         textArea.disabled = status;
         btn1.disabled = status;
         btn2.disabled = status;
@@ -324,7 +326,9 @@
         } else {
           $("#count").text(count);
           var ppl = max - count;
-          $status.text("Waiting for " + ppl + " more person to enable bidding...");
+          if(bidPending == true){
+            $status.text("Waiting for " + ppl + " more person to enable bidding...");
+          }
         }
       });
     </script>
