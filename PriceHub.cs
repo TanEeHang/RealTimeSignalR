@@ -29,7 +29,7 @@ namespace AssignmentApp
         public string Url { get; set; }
         public int Count { get; set; } = 0;
         public int PeopleMax { get; set; }
-        public bool AllRooms => Count >= PeopleMax;
+        public bool AllRooms = true;
         
     }
 
@@ -131,7 +131,7 @@ namespace AssignmentApp
 
         public async Task UpdateList(string id = null)
         {
-            var list = rooms.FindAll(r => r.AllRooms == false); 
+            var list = rooms.FindAll(r => r.AllRooms == true); 
             if (id == null)
             { 
                  await Clients.All.SendAsync("UpdateList", list); 
@@ -203,6 +203,9 @@ namespace AssignmentApp
             await Clients.All.SendAsync("UpdateChatStatus", $"<b>{name}</b> joined");
             room.Count++;
             await Clients.Group(roomId).SendAsync("UpdateCount", room.Count, room.PeopleMax);
+            if(room.Count >= room.PeopleMax){
+                room.AllRooms = false;
+            }
             await UpdateList();
         }
 
