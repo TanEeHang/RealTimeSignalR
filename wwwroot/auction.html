@@ -38,9 +38,9 @@
 
           <form id="priceForm" autocomplete="off">
             <div id="quickBid">
-              <div><button id="1" value="50">+50</button></div>
-              <div><button id="2" value="100">+100</button></div>
-              <div><button id="3" value="150">+150</button></div>
+              <div><button id="1" type="button" value="50">+50</button></div>
+              <div><button id="2" type="button" value="100">+100</button></div>
+              <div><button id="3" type="button" value="150">+150</button></div>
             </div>
             <input
               class="myinput"
@@ -209,21 +209,18 @@
       $("#1").click(e => {
         e.preventDefault();
         $("#bidPrice").val(lastPrice + 50);
-        alert($("#bidPrice").val());
         $("#priceForm").submit();
       });
 
       $("#2").click(e => {
         e.preventDefault();
         $("#bidPrice").val(lastPrice + 100);
-        alert($("#bidPrice").val());
         $("#priceForm").submit();
       });
 
       $("#3").click(e => {
         e.preventDefault();
         $("#bidPrice").val(lastPrice + 150);
-        alert($("#bidPrice").val());
         $("#priceForm").submit();
       });
 
