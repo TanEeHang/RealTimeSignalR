@@ -128,6 +128,21 @@ namespace AssignmentApp
             }
         }
 
+        public async Task updateBidBtn(bool status)
+        {
+            string id = Context.ConnectionId;
+            var roomId = Context.GetHttpContext().Request.Query["roomId"];
+
+            Room room = rooms.Find(e => e.Id == roomId);
+
+            if(room == null){
+                await Clients.Caller.SendAsync("Reject");
+                return;
+            }
+
+            await Clients.Group(roomId).SendAsync("getBidBtn", status);
+        }
+
 
         public async Task UpdateList(string id = null)
         {

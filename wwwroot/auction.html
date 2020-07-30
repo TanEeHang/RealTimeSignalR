@@ -31,7 +31,7 @@
 
         <div class="price">
           <main>
-            <p id="status">Waiting for bid ~</p>
+            <p id="status"></p>
             <b id="title"> Bid Message : </b>
             <ul id="priceMsg"></ul>
           </main>
@@ -44,7 +44,6 @@
             </div>
             <input
               class="myinput"
-              type="number"
               id="bidPrice"
               placeholder="Enter Bid Price"
               autofocus
@@ -108,6 +107,15 @@
       var ownID = "";
       var lastBidID = "";
       var lastBidName = "";
+      const textArea = document.getElementById("bidPrice");
+      const btn1 = document.getElementById("1");
+      const btn2 = document.getElementById("2");
+      const btn3 = document.getElementById("3");
+      var bidPending = true;
+      textArea.disabled = true;
+      btn1.disabled = true;
+      btn2.disabled = true;
+      btn3.disabled = true;
 
       if (!role || !name) {
         location = "index.html";
@@ -184,6 +192,14 @@
 
       con.on("getOwnID", id => {
         ownID = id;
+      });
+
+      con.on("getBidBtn", status => {
+        bidPending = status;
+        textArea.disabled = status;
+        btn1.disabled = status;
+        btn2.disabled = status;
+        btn3.disabled = status;
       });
 
       var countdown = null;
@@ -305,8 +321,14 @@
       con.on("UpdateCount", (count, max) => {
         if (count >= max) {
           $("#count").text("MAX");
+          $status.text("Place bid now!!!");
+          con.invoke("updateBidBtn", false);
         } else {
           $("#count").text(count);
+          var ppl = max - count;
+          if(bidPending == true){
+            $status.text("Waiting for " + ppl + " more person to enable bidding...");
+          }
         }
       });
     </script>
